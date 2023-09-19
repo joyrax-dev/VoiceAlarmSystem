@@ -2,7 +2,6 @@ const Speaker = require('speaker')
 
 const speaker = null
 
-process.stdin.pipe(speaker)
 
 const getSpeaker = () => {
 	if (speaker) {
@@ -14,6 +13,8 @@ const getSpeaker = () => {
 			bitDepth: 16,         // 16-bit samples
 			sampleRate: 44100     // 44,100 Hz sample rate
 		})
+		
+		process.stdin.pipe(speaker)
 
 		return speaker
 	}
