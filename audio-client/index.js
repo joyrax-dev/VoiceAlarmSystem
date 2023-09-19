@@ -1,29 +1,59 @@
-// const express = require('express')
-const WebSocket = require('ws')
-const Speaker = require('speaker')
+const io = require('socket.io-client')
+const { getSpeaker } = require('./speaker')
+const { performance } = require('perf_hooks')
+const { hostname, port, clientType, clientLocation } = require('./config.json')
 
-const speaker = new Speaker({
-    channels: 2,          // 2 channels
-    bitDepth: 16,         // 16-bit samples
-    sampleRate: 44100     // 44,100 Hz sample rate
+
+const speaker = getSpeaker()
+const socket = io.connect(`http://${hostname}`, {
+    port: port,
+    reconnect: true
+})
+const entryTimePlayAudio = 5000 // Время в мс, с последнего получения чанка с микрофона, после которого начинается записаватся новая запись
+const lastPlayAudioTime = 0
+const recordingAudio = [] // TODO: переделать в writeble стрим, в теории с ним легче и лучше работать, но я не сильно с ним знаком
+
+socket.on('connect', () => {
+	console.log(`Connected to: http://${hostname}:${port}`)
+
+	socket.emit('registration', {
+		clientType,
+		clientLocation
+	})
 })
 
-process.stdin.pipe(speaker)
+socket.on('disconnect', (reason) => {
+	console.info("Client disconnected")
 
-const ws = new WebSocket('ws://localhost:9099')
-
-// Евент который срабатывает когда устанавливается соединение 
-// с сервером, тут можно например отправлять серверу инфу о том
-// что это за клиент (например АБК 5 ЭТАЖ) и сервер будет знать 
-// что этот клиент подключен и все заебись^^
-ws.on('open', () => {
-	console.log('Соединение установлено')
+	if (reason === 'io server disconnect') {
+		console.warn("Server disconnected the client, trying to reconnect")
+		socket.connect()
+	}
+	else {
+		console.warn("Trying to reconnect again with server")
+	}
 })
 
-ws.on('message', (data) => {
-	speaker.write(data) // Buffer.from(data)
+socket.on('error', (error) => {
+	console.error(error)
 })
 
-ws.on('close', () => {
-	console.log('Соединение закрыто')
+socket.on('playAudio', (chunk) => {
+	let currentTime = performance.now()
+	let elapsedTime = currentTime - lastPlayAudioTime
+	lastPlayAudioTime = currentTime
+
+	if (elapsedTime < entryTimePlayAudio) { // если меньше то продолжаем записывать ту же запись
+		recordingAudio.push(chunk)
+	}
+	else { // начинаем новую запись
+		saveAudio()
+		recordingAudio = []
+	}
+
+	speaker.write(chunk)
 })
+
+const saveAudio = () => { // можно записывать в файл, а потом когда спадет активность подгрузить все в бд
+	return
+}
