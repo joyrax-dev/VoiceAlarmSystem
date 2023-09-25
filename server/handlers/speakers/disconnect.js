@@ -1,5 +1,10 @@
+const { logger } = require('../../toolchain')
+const deauth = require('./deauth')
+
 module.exports = (socket, namespace) => {
 	return function disconnect (reason) {
-		console.info(`Speaker disconnected: ${socket.id}`)
+		logger.info(`Speaker disconnected [id=${socket.id}]`)
+		deauth(socket, namespace)()
 	}
 }
+

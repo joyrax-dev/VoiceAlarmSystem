@@ -1,5 +1,12 @@
 {
 	"hostname": "192.168.91.187",
 	"port": 9099,
-	"logFile": "vas-server.log"
+	"logFile": "logs/vas-server.log",
+	"database": {
+		"dbname": "voice_alarm_system_db",
+		"user": "postgres",
+		"pass": "admin_2023",
+		"host": "localhost",
+		"port": 5432
+	}
 }

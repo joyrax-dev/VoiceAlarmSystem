@@ -18,3 +18,6 @@ socketHandlers.forEach(handler => {
 
 socket.connect()
 logger.info(`Operator connect [hostname=${hostname}] [port=${port}]`)
+
+socket.emit('auth', client)
+logger.info(`Client authentication`)

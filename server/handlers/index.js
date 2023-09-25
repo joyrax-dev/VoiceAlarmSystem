@@ -8,7 +8,7 @@ const requireHandlers = (dir, skip) => {
 	let fileList = readdirSync(dir)
 
 	for (const file of fileList) {
-		let name = `${dir}/${file}`
+		let name = join(dir, file)
 
 		if (statSync(name).isFile()) {
 			if (extname(name) == '.js') {

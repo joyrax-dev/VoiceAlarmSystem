@@ -14,7 +14,7 @@ const operatorsHandlers = handlersOperators()
 const speakerHandlers = handlersSpeakers()
 
 operatorsNamespace.on("connection", (socket) => {
-	console.log(`Operator connected: ${socket.id}`)
+	logger.info(`Operator connected [id=${socket.id}]`)
 
 	operatorsHandlers.forEach(handler => {
 		let callback = handler(socket, operatorsNamespace)
@@ -25,7 +25,7 @@ operatorsNamespace.on("connection", (socket) => {
 })
 
 speakersNamespace.on("connection", (socket) => {
-	console.log(`Speaker connected: ${socket.id}`)
+	logger.info(`Speaker connected [id=${socket.id}]`)
 
 	speakerHandlers.forEach(handler => {
 		let callback = handler(socket, speakersNamespace)

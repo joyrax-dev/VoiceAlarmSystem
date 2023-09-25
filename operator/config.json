@@ -1,7 +1,7 @@
 {
 	"hostname": "192.168.91.187",
 	"port": 9099,
-	"logFile": "vas-operator.log",
+	"logFile": "logs/vas-server.log",
 	"client": {
 		"type": "operator",
 		"location": "reseption"
