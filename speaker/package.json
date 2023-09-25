@@ -1,6 +1,6 @@
 {
-  "name": "voice-alarm-system-user-client",
-  "version": "1.0.0",
+  "name": "vas-speaker",
+  "version": "0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -8,5 +8,9 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "socket.io-client": "^4.7.2",
+    "speaker": "^0.5.4"
+  }
 }

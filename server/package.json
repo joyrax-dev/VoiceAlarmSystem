@@ -1,6 +1,6 @@
 {
-  "name": "voice-alarm-system-server",
-  "version": "1.0.0",
+  "name": "vas-server",
+  "version": "0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,6 @@
   "dependencies": {
     "express": "^4.18.2",
     "node-record-lpcm16": "^1.0.1",
-    "socket.io": "^4.7.2",
-    "ws": "^8.14.1"
+    "socket.io": "^4.7.2"
   }
 }

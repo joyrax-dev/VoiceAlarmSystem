@@ -1,7 +1,5 @@
 const Speaker = require('speaker')
-
-const speaker = null
-
+let speaker = null
 
 const getSpeaker = () => {
 	if (speaker) {

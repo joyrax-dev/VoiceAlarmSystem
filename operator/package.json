@@ -1,6 +1,6 @@
 {
-  "name": "voice-alarm-system-audio-client",
-  "version": "1.0.0",
+  "name": "vas-operator",
+  "version": "0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -10,8 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2",
-    "socket.io-client": "^4.7.2",
-    "speaker": "^0.5.4"
+    "node-record-lpcm16": "^1.0.1",
+    "socket.io-client": "^4.7.2"
   }
 }

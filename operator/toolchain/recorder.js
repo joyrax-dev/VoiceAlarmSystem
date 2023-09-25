@@ -3,7 +3,7 @@ const path = require('path')
 const { record } = require('node-record-lpcm16');
 
 const pathRecorder = 'C:\\Program Files (x86)\\sox-14-4-1\\sox.exe'
-const mic = null
+let mic = null
 
 const recorderExists = () => {
 	fs.access(pathRecorder, fs.F_OK, (err) => {

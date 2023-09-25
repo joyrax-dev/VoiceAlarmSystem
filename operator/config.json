@@ -1,0 +1,8 @@
+{
+	"hostname": "192.168.91.187",
+	"port": 9099,
+	"client": {
+		"type": "operator",
+		"location": "reseption"
+	}
+}
