@@ -17,10 +17,10 @@ operatorsNamespace.on("connection", (socket) => {
 	console.log(`Operator connected: ${socket.id}`)
 
 	operatorsHandlers.forEach(handler => {
-		let nameHandler = getFunctionName(handler)
 		let callback = handler(socket, operatorsNamespace)
+		let callbackName = getFunctionName(callback)
 
-		socket.on(nameHandler, callback)
+		socket.on(callbackName, callback)
 	});
 })
 
@@ -28,10 +28,10 @@ speakersNamespace.on("connection", (socket) => {
 	console.log(`Speaker connected: ${socket.id}`)
 
 	speakerHandlers.forEach(handler => {
-		let nameHandler = getFunctionName(handler)
 		let callback = handler(socket, speakersNamespace)
+		let callbackName = getFunctionName(callback)
 		
-		socket.on(nameHandler, callback)
+		socket.on(callbackName, callback)
 	});
 })
 

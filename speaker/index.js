@@ -11,9 +11,10 @@ const socket = io(`http://${hostname}:${port}/speakers`, {
 })
 
 socketHandlers.forEach(handler => {
-    let nameHandler = getFunctionName(handler)
+    let callback = handler(socket)
+    let callbackName = getFunctionName(callback)
 
-    socket.on(nameHandler, handler)
+    socket.on(callbackName, callback)
 });
 
 socket.connect()

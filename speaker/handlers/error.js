@@ -1,3 +1,5 @@
-module.exports = function error () {
-	console.log(error)
+module.exports = (socket) => {
+	return function error (_error) {
+		console.log(_error)
+	}
 }
