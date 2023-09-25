@@ -1,7 +1,7 @@
 const { createServer } = require("http")
 const { Server } = require("socket.io")
 const { handlersOperators, handlersSpeakers } = require('./handlers')
-const { getFunctionName } = require('./toolchain')
+const { getFunctionName, logger } = require('./toolchain')
 const { hostname, port } = require('./config.json')
 
 const httpServer = createServer()
@@ -36,5 +36,5 @@ speakersNamespace.on("connection", (socket) => {
 })
 
 httpServer.listen(port, hostname, () => {
-	console.info(`Server is running\nServer hostname: ${hostname}\nServer port: ${port}`)
+	logger.info(`Server started [hostname=${hostname}] [port=${port}]`)
 })

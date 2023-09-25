@@ -1,6 +1,5 @@
 const { hostname, port, client } = require('./config.json')
-// const { performance } = require('perf_hooks')
-const { getRecorder, getFunctionName } = require('./toolchain')
+const { getRecorder, getFunctionName, logger } = require('./toolchain')
 const { handlers } = require('./handlers')
 const io = require('socket.io-client')
 
@@ -18,3 +17,4 @@ socketHandlers.forEach(handler => {
 });
 
 socket.connect()
+logger.info(`Operator connect [hostname=${hostname}] [port=${port}]`)

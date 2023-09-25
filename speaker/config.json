@@ -1,6 +1,7 @@
 {
 	"hostname": "192.168.91.187",
 	"port": 9099,
+	"logFile": "vas-speaker.log",
 	"client": {
 		"type": "speaker",
 		"location": "1module"
