@@ -131,7 +131,6 @@ dist
 
 
 # Custom ignorable
-DevicesScheme/
 package-lock.json
 server/package-lock.json
 operator/package-lock.json
