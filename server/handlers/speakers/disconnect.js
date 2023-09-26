@@ -1,4 +1,4 @@
-const { logger } = require('../../toolchain')
+const { logger } = require('../../services')
 const deauth = require('./deauth')
 
 module.exports = (socket, namespace) => {

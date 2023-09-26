@@ -1,3 +1,4 @@
 module.exports = {
-	...require('./connection')
+	...require('./connection'),
+	...require('./models/Logs')
 }

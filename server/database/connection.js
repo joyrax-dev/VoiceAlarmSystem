@@ -1,5 +1,5 @@
 const { Sequelize } = require('sequelize')
-const { logger } = require('../toolchain')
+const { logger } = require('../services')
 const { database } = require('../config.json')
 
 let sequelize = null
@@ -34,5 +34,6 @@ const getDatabase = () => {
 
 module.exports = {
 	sequelizeConnection,
-	getDatabase
+	getDatabase,
+	database: getDatabase()
 }
