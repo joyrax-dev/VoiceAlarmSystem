@@ -1,39 +1,26 @@
 const { Sequelize } = require('sequelize')
 const { logger } = require('../services')
-const { database } = require('../config.json')
+const { user, pass, host, port, dbname } = require('../config.json').database
 
-let sequelize = null
-
-const getConnectionString = () => {
-	return `postgres://${database.user}:${database.pass}@${database.host}:${database.port}/${database.dbname}`
+function getConnectionString() {
+	return `postgres://${user}:${pass}@${host}:${port}/${dbname}`
 }
 
-const sequelizeConnection = () => {
+function sequelizeConnection () {
 	let connStr = getConnectionString()
 
-	sequelize = new Sequelize(connStr)
+	database = new Sequelize(connStr)
 
-	sequelize.authenticate().then(() => {
-        console.log('Подключение к базе данных установлено')
-		logger.info(`Database connected [db=${database.dbname}] [host=${database.host}] [port=${database.port}]`)
+	database.authenticate().then(() => {
+		logger.info(`Database connected [db=${dbname}] [host=${host}] [port=${port}]`)
     }).catch((error) => {
         logger.error(`Error database conection errorString:"${error}"`)
 		throw new Error(error)
     })
 }
 
-const getDatabase = () => {
-	if (sequelize) {
-		return sequelize
-	}
-	else {
-		sequelizeConnection()
-		return sequelize
-	}
-}
+const database = sequelizeConnection()
 
 module.exports = {
-	sequelizeConnection,
-	getDatabase,
-	database: getDatabase()
+	database
 }

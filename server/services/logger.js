@@ -90,7 +90,6 @@ class Logger {
 		
 		logs.forEach(element => {
 			Logs.create(element).then((newLog) => {
-				console.log(newLog)
 				this._logger.info(`Upload log [id=${newLog.id}]`)
 			}).catch((error) => {
 				this._logger.error(`Error upload log [id=${newLog.id}] [error=${error}]`)
@@ -99,6 +98,10 @@ class Logger {
 	}
 }
 
+
+const logger = new Logger()
+
 module.exports = {
-	Logger
+	Logger,
+	logger
 }

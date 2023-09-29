@@ -1,18 +1,30 @@
-const { createServer } = require("http")
-const { Server } = require("socket.io")
+const { createServer } = require('http')
+const { Server } = require('socket.io')
+const { readdirSync, statSync, unlink } = require('fs')
+const { join, extname } = require('path')
 const { database, Logs } = require('./database')
 const { handlersOperators, handlersSpeakers } = require('./handlers')
-const { getFunctionName } = require('./toolchain')
-const { hostname, port } = require('./config.json')
-const { readdirSync, statSync } = require('fs')
-const { logger } = require('./services')
-const { join } = require("path")
+const { hostname, port, logUploadTime } = require('./config.json')
+const { logger, toolchain } = require('./services')
 
-Logs.sync({force: false}).then(() => {
+try {
+	await Logs.sync({force: false})
+
 	logger.info(`Table exist [table=${Logs.modelName}]`)
-}).catch((error) => {
+}
+catch (err) {
 	logger.error(`Error while checking table [table=Logs] [error=${error}]`)
-})
+	logger.warn(`I'm trying to recreate the table [table=${Logs.modelName}]`)
+
+	try {
+		Logs.sync({force: true})
+
+		logger.info(`Table recreated [table=${Logs.modelName}]`)
+	} 
+	catch (err) {
+		logger.error(`Error in table re-creation [table=Logs] [error=${error}]`)
+	}
+}
 
 const httpServer = createServer()
 const io = new Server(httpServer)
@@ -23,39 +35,50 @@ const speakersNamespace = io.of('/speakers')
 const operatorsHandlers = handlersOperators()
 const speakerHandlers = handlersSpeakers()
 
-operatorsNamespace.on("connection", (socket) => {
+operatorsNamespace.on('connection', (socket) => {
 	logger.info(`Operator connected [id=${socket.id}]`)
 
 	operatorsHandlers.forEach(handler => {
 		let callback = handler(socket, operatorsNamespace)
-		let callbackName = getFunctionName(callback)
+		let callbackName = toolchain.extractFunctionName(callback)
 
 		socket.on(callbackName, callback)
-	});
+	})
 })
 
-speakersNamespace.on("connection", (socket) => {
+speakersNamespace.on('connection', (socket) => {
 	logger.info(`Speaker connected [id=${socket.id}]`)
 
 	speakerHandlers.forEach(handler => {
 		let callback = handler(socket, speakersNamespace)
-		let callbackName = getFunctionName(callback)
+		let callbackName = toolchain.extractFunctionName(callback)
 		
 		socket.on(callbackName, callback)
-	});
+	})
 })
 
 const startTimer = (callback) => {
 	const today = new Date()
-	const targetTime = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1, 2, 0, 0)
+	const targetTime = new Date(
+		today.getFullYear(),
+		today.getMonth(),
+		today.getDate(),
+		logUploadTime.hours,
+		logUploadTime.minutes,
+		logUploadTime.seconds
+	)
+
+	if (today > targetTime) {
+		targetTime.setDate(today.getDate() + 1)
+	}
 
 	const timeDifference = targetTime - today
 
 	setTimeout(() => {
-		logger.info(`Starting timer [datetime=${new Date()}]`)
+		const currentDateTime = new Date()
+		logger.info(`Starting timer [datetime=${currentDateTime}]`)
 
 		callback()
-
 		setInterval(callback, 24 * 60 * 60 * 1000)
 	}, timeDifference)
 }
@@ -63,29 +86,20 @@ const startTimer = (callback) => {
 startTimer(() => {
 	logger.info(`Starting upload logs [date=${new Date()}]`)
 	let dir = join(process.cwd(), 'logs')
-	let files = []
+	const files = readdirSync(dir).filter((file) => extname(file) !== '.log')
 
-	let fileList = readdirSync(dir)
-
-	for (const file of fileList) {
-		let name = join(dir, file)
-
-		if (statSync(name).isFile()) {
-			if (extname(name) == '.log') {
-				continue
-			}
-			else {
-				files.push(name)
-			}
-		}
-	}
-
-	for (const file of files) {
-		let logs = logger.parselogFile(file)
-
+	files.forEach((file) => {
+		const filePath = join(dir, file)
+		const logs = logger.parselogFile(filePath)
 		logger.uploadLogs(logs)
-		logger.info(`Uploaded log file [file=${file}] [endOperation=${new Date()}]`)
-	}
+		logger.info(`Загружен файл журнала [file=${file}] [endOperation=${new Date()}]`)
+	
+		unlink(filePath, (err) => {
+			if (err) {
+				logger.error(`Ошибка при удалении файла [file=${file}]`)
+			}
+		})
+	})
 })
 
 httpServer.listen(port, hostname, () => {

@@ -2,6 +2,11 @@
 	"hostname": "192.168.91.187",
 	"port": 9099,
 	"logFile": "logs/vas-server.log",
+	"logUploadTime": {
+		"hours": 2,
+		"minutes": 0,
+		"seconds": 0
+	},
 	"database": {
 		"dbname": "voice_alarm_system_db",
 		"user": "postgres",

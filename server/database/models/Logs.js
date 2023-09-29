@@ -1,9 +1,7 @@
-const { Sequelize, DataTypes } = require('sequelize')
-const { getDatabase } = require('../connection')
+const { DataTypes } = require('sequelize')
+const { database } = require('../connection')
 
-const db = getDatabase()
-
-const Logs = db.define(
+const Logs = database.define(
 	'Logs',
 	{
 		date: {

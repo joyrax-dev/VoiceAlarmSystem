@@ -1,7 +1,9 @@
-const { Logger } = require('./logger')
-
-const logger = new Logger()
+const { toolchain } = require('./toolchain')
+const { logger } = require('./logger')
+const { store } = require('./store')
 
 module.exports = {
-	logger
+	toolchain,
+	logger,
+	store
 }

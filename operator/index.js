@@ -1,5 +1,5 @@
 const { hostname, port, client } = require('./config.json')
-const { getRecorder, getFunctionName, logger } = require('./toolchain')
+const { getRecorder, getFunctionName, logger, keyboard } = require('./toolchain')
 const { handlers } = require('./handlers')
 const io = require('socket.io-client')
 
@@ -14,6 +14,15 @@ socketHandlers.forEach(handler => {
     let callbackName = getFunctionName(callback)
 
     socket.on(callbackName, callback)
+})
+
+
+keyboard.addListener(function (e, down) {
+    if (e.state == "DOWN" && e.name == "F" && (down["LEFT ALT"] || down["RIGHT ALT"])) {
+        //call your function
+        console.log('alt+f')
+        return true;
+    }
 });
 
 socket.connect()
