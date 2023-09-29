@@ -19,4 +19,3 @@ socket.connect()
 logger.info(`Speaker connect [hostname=${hostname}] [port=${port}]`)
 
 socket.emit('auth', client)
-logger.info(`Client authentication`)

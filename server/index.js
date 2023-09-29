@@ -36,40 +36,26 @@ const operatorsHandlers = handlersOperators()
 const speakerHandlers = handlersSpeakers()
 const generalHandlers = handlersGeneral()
 
+function attachHandlers(socket, namespace, handlers) {
+	handlers.forEach(handler => {
+		let callback = handler(socket, namespace)
+		let callbackName = toolchain.extractFunctionName(callback)
+		socket.on(callbackName, callback)
+	})
+}
+
 operatorsNamespace.on('connection', (socket) => {
 	logger.info(`Operator connected [id=${socket.id}]`)
 
-	generalHandlers.forEach(handler => {
-		let callback = handler(socket, operatorsNamespace)
-		let callbackName = toolchain.extractFunctionName(callback)
-
-		socket.on(callbackName, callback)
-	})
-
-	operatorsHandlers.forEach(handler => {
-		let callback = handler(socket, operatorsNamespace)
-		let callbackName = toolchain.extractFunctionName(callback)
-
-		socket.on(callbackName, callback)
-	})
+	attachHandlers(socket, operatorsNamespace, generalHandlers)
+	attachHandlers(socket, operatorsNamespace, operatorsHandlers)
 })
 
 speakersNamespace.on('connection', (socket) => {
 	logger.info(`Speaker connected [id=${socket.id}]`)
 
-	generalHandlers.forEach(handler => {
-		let callback = handler(socket, speakersNamespace)
-		let callbackName = toolchain.extractFunctionName(callback)
-
-		socket.on(callbackName, callback)
-	})
-
-	speakerHandlers.forEach(handler => {
-		let callback = handler(socket, speakersNamespace)
-		let callbackName = toolchain.extractFunctionName(callback)
-		
-		socket.on(callbackName, callback)
-	})
+	attachHandlers(socket, operatorsNamespace, generalHandlers)
+	attachHandlers(socket, operatorsNamespace, speakersNamespace)
 })
 
 const startTimer = (callback) => {
@@ -107,11 +93,11 @@ startTimer(() => {
 		const filePath = join(dir, file)
 		const logs = logger.parselogFile(filePath)
 		logger.uploadLogs(logs)
-		logger.info(`Загружен файл журнала [file=${file}] [endOperation=${new Date()}]`)
+		logger.info(`Uploaded log file [file=${file}] [endOperation=${new Date()}]`)
 	
 		unlink(filePath, (err) => {
 			if (err) {
-				logger.error(`Ошибка при удалении файла [file=${file}]`)
+				logger.error(`Error while deleting the file [file=${file}]`)
 			}
 		})
 	})

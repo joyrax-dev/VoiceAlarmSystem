@@ -14,7 +14,6 @@
     "express": "^4.18.2",
     "log4js": "^6.9.1",
     "moment": "^2.29.4",
-    "node-record-lpcm16": "^1.0.1",
     "pg": "^8.11.3",
     "sequelize": "^6.33.0",
     "socket.io": "^4.7.2"
