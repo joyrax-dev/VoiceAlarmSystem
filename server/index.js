@@ -3,7 +3,7 @@ const { Server } = require('socket.io')
 const { readdirSync, statSync, unlink } = require('fs')
 const { join, extname } = require('path')
 const { database, Logs } = require('./database')
-const { handlersOperators, handlersSpeakers } = require('./handlers')
+const { handlersOperators, handlersSpeakers, handlersGeneral } = require('./handlers')
 const { hostname, port, logUploadTime } = require('./config.json')
 const { logger, toolchain } = require('./services')
 
@@ -34,9 +34,17 @@ const speakersNamespace = io.of('/speakers')
 
 const operatorsHandlers = handlersOperators()
 const speakerHandlers = handlersSpeakers()
+const generalHandlers = handlersGeneral()
 
 operatorsNamespace.on('connection', (socket) => {
 	logger.info(`Operator connected [id=${socket.id}]`)
+
+	generalHandlers.forEach(handler => {
+		let callback = handler(socket, operatorsNamespace)
+		let callbackName = toolchain.extractFunctionName(callback)
+
+		socket.on(callbackName, callback)
+	})
 
 	operatorsHandlers.forEach(handler => {
 		let callback = handler(socket, operatorsNamespace)
@@ -48,6 +56,13 @@ operatorsNamespace.on('connection', (socket) => {
 
 speakersNamespace.on('connection', (socket) => {
 	logger.info(`Speaker connected [id=${socket.id}]`)
+
+	generalHandlers.forEach(handler => {
+		let callback = handler(socket, speakersNamespace)
+		let callbackName = toolchain.extractFunctionName(callback)
+
+		socket.on(callbackName, callback)
+	})
 
 	speakerHandlers.forEach(handler => {
 		let callback = handler(socket, speakersNamespace)

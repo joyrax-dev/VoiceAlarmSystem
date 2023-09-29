@@ -1,5 +1,5 @@
 const { hostname, port, client } = require('./config.json')
-const { getFunctionName, logger } = require('./toolchain')
+const { toolchain, logger } = require('./services')
 const { handlers } = require('./handlers')
 const io = require('socket.io-client')
 
@@ -10,7 +10,7 @@ const socket = io(`http://${hostname}:${port}/speakers`, {
 
 socketHandlers.forEach(handler => {
     let callback = handler(socket)
-    let callbackName = getFunctionName(callback)
+    let callbackName = toolchain.extractFunctionName(callback)
 
     socket.on(callbackName, callback)
 });

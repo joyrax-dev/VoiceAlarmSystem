@@ -1,4 +1,4 @@
-const { logger, store } = require('../../services')
+const { logger, store } = require('../services')
 
 module.exports = (socket, namespace) => {
 	return function deauth () { // clientInfo => { type, location }

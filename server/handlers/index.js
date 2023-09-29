@@ -44,5 +44,8 @@ module.exports = {
 		const handlersPath = join(__dirname, 'speakers')
 
 		return requireHandlers(handlersPath)
+	},
+	handlersGeneral: () => {
+		return requireHandlers(__dirname, ['index.js'])
 	}
 }
