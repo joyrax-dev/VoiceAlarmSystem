@@ -138,3 +138,4 @@ speaker/package-lock.json
 
 store.json
 server/store.json
+.vscode
