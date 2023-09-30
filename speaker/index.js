@@ -4,8 +4,11 @@ const { handlers } = require('./handlers')
 const io = require('socket.io-client')
 
 const socketHandlers = handlers()
-const socket = io(`http://${hostname}:${port}/speakers`, {
-    autoConnect: false
+const socket = io(`http://${hostname}:${port}/${client.type}`, {
+    autoConnect: false,
+    reconnection: true,
+    reconnectionAttempts: Infinity,
+    reconnectionDelay: 5000
 })
 
 socketHandlers.forEach(handler => {
@@ -13,9 +16,11 @@ socketHandlers.forEach(handler => {
     let callbackName = toolchain.extractFunctionName(callback)
 
     socket.on(callbackName, callback)
-});
+})
+
+process.on('exit', (code) => {
+    logger.warn(`The client has completed its work [code=${code}] [type=${client.type}] [location=${client.location}]`)
+    socket.disconnect()
+})
 
 socket.connect()
-logger.info(`Speaker connect [hostname=${hostname}] [port=${port}]`)
-
-socket.emit('auth', client)

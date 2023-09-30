@@ -4,6 +4,6 @@
 	"logFile": "logs/vas-server.log",
 	"client": {
 		"type": "speaker",
-		"location": "1module"
+		"location": "MODULE1"
 	}
 }
