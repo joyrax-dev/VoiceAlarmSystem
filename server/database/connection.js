@@ -9,14 +9,18 @@ function getConnectionString() {
 function sequelizeConnection () {
 	let connStr = getConnectionString()
 
-	database = new Sequelize(connStr)
+	const db = new Sequelize(connStr, {
+		logging: false
+	})
 
-	database.authenticate().then(() => {
+	db.authenticate().then(() => {
 		logger.info(`Database connected [db=${dbname}] [host=${host}] [port=${port}]`)
     }).catch((error) => {
         logger.error(`Error database conection errorString:"${error}"`)
 		throw new Error(error)
     })
+
+	return db
 }
 
 const database = sequelizeConnection()

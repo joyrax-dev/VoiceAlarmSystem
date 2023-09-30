@@ -1,13 +1,13 @@
+const { logger } = require('../services')
+
 module.exports = (socket) => {
 	return function disconnect (reason) {
-		console.log("Client disconnected")
+		logger.warn(`Disconnected`)
 
 		if (reason === 'io server disconnect') {
-			console.log("Server disconnected the client, trying to reconnect")
+			logger.warn(`Reconnection attempt`)
 			socket.connect()
 		}
-		else {
-			console.log("Trying to reconnect again with server")
-		}
+		// else the socket will automatically try to reconnect
 	}
 }

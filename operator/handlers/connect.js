@@ -1,7 +1,9 @@
-const { hostname, port } = require('../config.json')
+const { hostname, port, client } = require('../config.json')
+const { logger } = require('../services')
 
 module.exports = (socket) => {
 	return function connect () {
-		console.log(`Connected to: http://${hostname}:${port}`)
+		logger.info(`Connected [to=http://${hostname}:${port}/${client.type}]`)
+		socket.emit('auth', client)
 	}
 }

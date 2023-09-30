@@ -1,63 +1,71 @@
 const { createServer } = require('http')
 const { Server } = require('socket.io')
-const { readdirSync, statSync, unlink } = require('fs')
+const { readdirSync, statSync, unlink, access, constants } = require('fs')
 const { join, extname } = require('path')
 const { database, Logs } = require('./database')
 const { handlersOperators, handlersSpeakers, handlersGeneral } = require('./handlers')
-const { hostname, port, logUploadTime } = require('./config.json')
+const { hostname, port, logUploadTime, storeFile } = require('./config.json')
 const { logger, toolchain } = require('./services')
 
-try {
-	await Logs.sync({force: false})
+// Проверка таблицы в базе данных
+Logs.sync({force: false}).then(() => {
+	logger.info(`Table exist [table=${Logs.tableName}]`)
+}).catch(err => {
+	logger.error(`Error while checking table [table=${Logs.tableName}] [error=${err}]`)
+	logger.warn(`I'm trying to recreate the table [table=${Logs.tableName}]`)
 
-	logger.info(`Table exist [table=${Logs.modelName}]`)
-}
-catch (err) {
-	logger.error(`Error while checking table [table=Logs] [error=${error}]`)
-	logger.warn(`I'm trying to recreate the table [table=${Logs.modelName}]`)
+	Logs.sync({force: true}).then(() => {
+		logger.info(`Table recreated [table=${Logs.tableName}]`)
+	}).catch(err => {
+		logger.error(`Error in table re-creation [table=${Logs.tableName}] [error=${err}]`)
+	})
+})
 
-	try {
-		Logs.sync({force: true})
-
-		logger.info(`Table recreated [table=${Logs.modelName}]`)
-	} 
-	catch (err) {
-		logger.error(`Error in table re-creation [table=Logs] [error=${error}]`)
+// Удаление файла store.json на запуске сервера
+const storePath = join(process.cwd(), storeFile)
+access(storePath, constants.F_OK, err => {
+	if (!err) {
+		unlink(storePath, () => {
+			logger.error(`Error while deleting the file [file=${storePath}]`)
+		})
 	}
-}
+})
 
+// Созданмие сервера
 const httpServer = createServer()
 const io = new Server(httpServer)
 
-const operatorsNamespace = io.of('/operators')
-const speakersNamespace = io.of('/speakers')
+const operatorsNamespace = io.of('/operator')
+const speakersNamespace = io.of('/speaker')
 
 const operatorsHandlers = handlersOperators()
 const speakerHandlers = handlersSpeakers()
 const generalHandlers = handlersGeneral()
 
-function attachHandlers(socket, namespace, handlers) {
+// Добавление обработчиков на сокеты
+function attachHandlers(socket, namespaces, handlers) {
 	handlers.forEach(handler => {
-		let callback = handler(socket, namespace)
+		let callback = handler(socket, namespaces)
 		let callbackName = toolchain.extractFunctionName(callback)
 		socket.on(callbackName, callback)
 	})
 }
 
 operatorsNamespace.on('connection', (socket) => {
-	logger.info(`Operator connected [id=${socket.id}]`)
+	logger.info(`Client connected [id=${socket.id}]`)
 
-	attachHandlers(socket, operatorsNamespace, generalHandlers)
-	attachHandlers(socket, operatorsNamespace, operatorsHandlers)
+	attachHandlers(socket, { operatorsNamespace, speakersNamespace }, generalHandlers)
+	attachHandlers(socket, { operatorsNamespace, speakersNamespace }, operatorsHandlers)
 })
 
 speakersNamespace.on('connection', (socket) => {
-	logger.info(`Speaker connected [id=${socket.id}]`)
+	logger.info(`Client connected [id=${socket.id}]`)
 
-	attachHandlers(socket, operatorsNamespace, generalHandlers)
-	attachHandlers(socket, operatorsNamespace, speakersNamespace)
+	attachHandlers(socket, { operatorsNamespace, speakersNamespace }, generalHandlers)
+	attachHandlers(socket, { operatorsNamespace, speakersNamespace }, speakerHandlers)
 })
 
+// Автоматическая выгрузка логов в базу данных и последуещее их удаление с утсройства
 const startTimer = (callback) => {
 	const today = new Date()
 	const targetTime = new Date(
@@ -103,6 +111,7 @@ startTimer(() => {
 	})
 })
 
+// Стартуем
 httpServer.listen(port, hostname, () => {
 	logger.info(`Server started [hostname=${hostname}] [port=${port}]`)
 })

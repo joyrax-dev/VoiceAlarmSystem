@@ -8,9 +8,12 @@ log4js.configure({
 			filename: logFile,
 			pattern: 'yyyy-MM-dd'
 		},
+		console: {
+			type: 'console'
+		}
 	},
 	categories: {
-		default: { appenders: ['everything'], level: 'debug' }
+		default: { appenders: ['everything', 'console'], level: 'debug' }
 	}
 })
 

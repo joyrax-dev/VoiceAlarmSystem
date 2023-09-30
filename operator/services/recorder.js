@@ -13,6 +13,7 @@ const recorder = record({
 	sampleRate: 44100,
 	channels: 2
 })
+recorder._stream.pause()
 
 module.exports = {
 	recorder
