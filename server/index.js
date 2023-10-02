@@ -100,15 +100,22 @@ startTimer(() => {
 	files.forEach((file) => {
 		const filePath = join(dir, file)
 		const logs = logger.parselogFile(filePath)
-		logger.uploadLogs(logs)
-		logger.info(`Uploaded log file [file=${file}] [endOperation=${new Date()}]`)
-	
-		unlink(filePath, (err) => {
-			if (err) {
-				logger.error(`Error while deleting the file [file=${file}]`)
-			}
+
+		logger.uploadLogs(logs, () => {
+			logger.info(`Uploaded log file [file=${file}] [endOperation=${new Date()}]`)
+
+			unlink(filePath, (err) => {
+				if (err) {
+					logger.error(`Error while deleting the file [file=${file}]`)
+				}
+			})
 		})
 	})
+})
+
+// Здесь можно на пример пробовать запустить батник для рестарта сервера или что-то подобного
+process.on('exit', (code) => {
+    logger.warn(`The server has completed its work [code=${code}]`)
 })
 
 // Стартуем

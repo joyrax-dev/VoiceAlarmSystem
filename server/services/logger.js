@@ -88,16 +88,18 @@ class Logger {
 		return logs
 	}
 
-	uploadLogs(logs) { // let arrlogs = logerr.parselogFile(join(process.cwd(), 'logs/vas-server.log'))
+	uploadLogs(logs, successCallback = () => {}) { // let arrlogs = logerr.parselogFile(join(process.cwd(), 'logs/vas-server.log'))
 		const { Logs } = require('../database')
 		
 		logs.forEach(element => {
 			Logs.create(element).then((newLog) => {
 				this._logger.info(`Upload log [id=${newLog.id}]`)
 			}).catch((error) => {
-				this._logger.error(`Error upload log [id=${newLog.id}] [error=${error}]`)
+				this._logger.error(`Error upload log [error=${error}] [log=${element}]`)
 			})
 		})
+
+		successCallback()
 	}
 }
 
