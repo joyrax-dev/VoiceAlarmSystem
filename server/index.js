@@ -5,7 +5,7 @@ const { join, extname } = require('path')
 const { database, Logs } = require('./database')
 const { handlersOperators, handlersSpeakers, handlersGeneral } = require('./handlers')
 const { hostname, port, logUploadTime, storeFile } = require('./config.json')
-const { logger, toolchain } = require('./services')
+const { logger, toolchain, logExporter } = require('./services')
 
 // Проверка таблицы в базе данных
 Logs.sync({force: false}).then(() => {
@@ -65,53 +65,55 @@ speakersNamespace.on('connection', (socket) => {
 	attachHandlers(socket, { operatorsNamespace, speakersNamespace }, speakerHandlers)
 })
 
-// Автоматическая выгрузка логов в базу данных и последуещее их удаление с утсройства
-const startTimer = (callback) => {
-	const today = new Date()
-	const targetTime = new Date(
-		today.getFullYear(),
-		today.getMonth(),
-		today.getDate(),
-		logUploadTime.hours,
-		logUploadTime.minutes,
-		logUploadTime.seconds
-	)
+// // Автоматическая выгрузка логов в базу данных и последуещее их удаление с утсройства
+// const startTimer = (callback) => {
+// 	const today = new Date()
+// 	const targetTime = new Date(
+// 		today.getFullYear(),
+// 		today.getMonth(),
+// 		today.getDate(),
+// 		logUploadTime.hours,
+// 		logUploadTime.minutes,
+// 		logUploadTime.seconds
+// 	)
 
-	if (today > targetTime) {
-		targetTime.setDate(today.getDate() + 1)
-	}
+// 	if (today > targetTime) {
+// 		targetTime.setDate(today.getDate() + 1)
+// 	}
 
-	const timeDifference = targetTime - today
+// 	const timeDifference = targetTime - today
 
-	setTimeout(() => {
-		const currentDateTime = new Date()
-		logger.info(`Starting timer [datetime=${currentDateTime}]`)
+// 	setTimeout(() => {
+// 		const currentDateTime = new Date()
+// 		logger.info(`Starting timer [datetime=${currentDateTime}]`)
 
-		callback()
-		setInterval(callback, 24 * 60 * 60 * 1000)
-	}, timeDifference)
-}
+// 		callback()
+// 		setInterval(callback, 24 * 60 * 60 * 1000)
+// 	}, timeDifference)
+// }
 
-startTimer(() => {
-	logger.info(`Starting upload logs [date=${new Date()}]`)
-	let dir = join(process.cwd(), 'logs')
-	const files = readdirSync(dir).filter((file) => extname(file) !== '.log')
+// startTimer(() => {
+// 	logger.info(`Starting upload logs [date=${new Date()}]`)
+// 	const dir = join(process.cwd(), 'logs')
+// 	const files = readdirSync(dir).filter((file) => extname(file) !== '.log')
 
-	files.forEach((file) => {
-		const filePath = join(dir, file)
-		const logs = logger.parselogFile(filePath)
+// 	files.forEach((file) => {
+// 		const filePath = join(dir, file)
+// 		const logs = logger.parselogFile(filePath)
 
-		logger.uploadLogs(logs, () => {
-			logger.info(`Uploaded log file [file=${file}] [endOperation=${new Date()}]`)
+// 		logger.uploadLogs(logs, () => {
+// 			logger.info(`Uploaded log file [file=${file}] [endOperation=${new Date()}]`)
 
-			unlink(filePath, (err) => {
-				if (err) {
-					logger.error(`Error while deleting the file [file=${file}]`)
-				}
-			})
-		})
-	})
-})
+// 			unlink(filePath, (err) => {
+// 				if (err) {
+// 					logger.error(`Error while deleting the file [file=${file}]`)
+// 				}
+// 			})
+// 		})
+// 	})
+// })
+
+logExporter.start({ operatorsNamespace, speakersNamespace })
 
 // Здесь можно на пример пробовать запустить батник для рестарта сервера или что-то подобного
 process.on('exit', (code) => {

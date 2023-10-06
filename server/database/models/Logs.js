@@ -12,7 +12,7 @@ const Logs = database.define(
 			type: DataTypes.STRING,
 			allowNull: false
 		},
-		type: {
+		code: {
 			type: DataTypes.STRING,
 			allowNull: false
 		},
@@ -30,6 +30,14 @@ const Logs = database.define(
 		},
 		source: {
 			type: DataTypes.TEXT,
+			allowNull: false
+		},
+		type: {
+			type: DataTypes.STRING,
+			allowNull: false
+		},
+		location: {
+			type: DataTypes.STRING,
 			allowNull: false
 		}
 	}

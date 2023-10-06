@@ -1,11 +1,11 @@
+const { logger } = require('./logger')
 const { toolchain } = require('./toolchain')
 const { keyboard } = require('./keyboard')
 const { recorder } = require('./recorder')
-const { logger } = require('./logger')
 
 module.exports = {
+	logger,
 	toolchain,
 	keyboard,
-	recorder,
-	logger
+	recorder
 }

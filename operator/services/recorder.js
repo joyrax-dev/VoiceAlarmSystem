@@ -8,6 +8,7 @@ access(recorderPath, constants.F_OK, (err) => {
 	}
 })
 
+// Если вообще не подключено не одно устройство записи то sox завершаетсяс кодом 2
 const recorder = record({
 	recorder: 'sox',
 	sampleRate: 44100,
