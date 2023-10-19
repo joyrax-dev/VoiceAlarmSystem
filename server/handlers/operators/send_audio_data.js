@@ -1,4 +1,5 @@
-const { logger, store } = require('../../services')
+const { store } = require('../../services/store')
+const { logger } = require('../../services/logger')
 
 module.exports = (socket, namespaces) => {
 	return function send_audio_data (data) { // data = { audio, location } location = 'ALL', ['LOCATION', ...]

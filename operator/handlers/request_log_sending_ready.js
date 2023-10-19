@@ -1,4 +1,4 @@
-const { logger } = require('../services')
+const { logger } = require('../services/logger')
 const { readdirSync } = require('fs')
 const { join, extname } = require('path')
 

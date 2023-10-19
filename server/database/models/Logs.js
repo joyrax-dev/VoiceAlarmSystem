@@ -1,5 +1,5 @@
-const { DataTypes } = require('sequelize')
 const { database } = require('../connection')
+const { DataTypes } = require('sequelize')
 
 const Logs = database.define(
 	'Logs',

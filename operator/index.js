@@ -1,5 +1,8 @@
 const { hostname, port, client } = require('./config.json')
-const { recorder, toolchain, logger, keyboard } = require('./services')
+const { toolchain } = require('./services/toolchain')
+const { logger } = require('./services/logger')
+const { recorder } = require('./services/recorder')
+const { keyboard } = require('./services/keyboard')
 const { handlers } = require('./handlers')
 const io = require('socket.io-client')
 

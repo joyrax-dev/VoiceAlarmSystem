@@ -1,16 +1,18 @@
 const { logUploadTime } = require('../config.json')
-const { existsSync, readFileSync } = require('fs')
-const { store, logger } = require('../services')
-const { Logs } = require('../database')
+const { existsSync, readFileSync, readdirSync, unlink } = require('fs')
+const { join, extname } = require('path')
+const { store } = require('../services/store')
+const { logger } = require('../services/logger')
+const { Logs } = require('../database/models/Logs')
 const moment = require('moment')
 
 class LogExporter {
 	constructor() {}
 
-	start(namespaces) {
+	start(namespaces, io) {
 		this.ofSpeaker = namespaces.speakersNamespace
 		this.ofOperator = namespaces.operatorsNamespace
-
+		this.io = io
 		this.createTimer()
 	}
 
@@ -20,55 +22,36 @@ class LogExporter {
 		const clients = Object.entries(store.data)
 		const readyClients = []
 
-		clients.forEach(([id, obj]) => {
-			const { type, location } = obj
-			const eventName = id + '__LOGS'
+        clients.forEach(([id, obj]) => {
+            const { type, location } = obj;
+            const eventName = id + '__LOGS';
 
-			if (type == 'speaker') {
-				this.ofSpeaker.to(id).emit('request_log_sending_ready', (response) => {
-					const { status } = response
-
-					if (status == 'READY') {
-						readyClients.push({
-							id,
-							type,
-							location
-						})
-
-						this.ofSpeaker.on(eventName, (raw_log) => {
-							const log = this.logParse(raw_log)
-
-							this.logUpload(log, obj)
-						})
-					}
-					else if (status == 'NOT_READY') {
-						// я хз что сюды запихнуть и похуй
-					}
-				})
-			}
-			else if (type == 'operator') {
-				this.ofOperator.to(id).emit('request_log_sending_ready', (response) => {
-					const { status } = response
-
-					if (status == 'READY') {
-						readyClients.push({
-							id,
-							type,
-							location
-						})
-
-						this.ofOperator.on(eventName, (raw_log) => {
-							const log = this.logParse(raw_log)
-
-							this.logUpload(log, obj)
-						})
-					}
-					else if (status == 'NOT_READY') {
-						// я хз что сюды запихнуть и похуй
-					}
-				})
-			}
-		})
+            if (type == 'speaker') {
+                this.ofSpeaker.to(id).emit('request_log_sending_ready', (response) => {
+                    if (response && response.status === 'READY') {
+                        readyClients.push({ id, type, location });
+                        this.ofSpeaker.on(eventName, (raw_log) => {
+                            const log = this.logParse(raw_log);
+                            this.logUpload(log, obj);
+                        });
+                    } else if (response && response.status === 'NOT_READY') {
+                        // Handle NOT_READY status
+                    }
+                });
+            } else if (type == 'operator') {
+                this.ofOperator.to(id).emit('request_log_sending_ready', (response) => {
+                    if (response && response.status === 'READY') {
+                        readyClients.push({ id, type, location });
+                        this.ofOperator.on(eventName, (raw_log) => {
+                            const log = this.logParse(raw_log);
+                            this.logUpload(log, obj);
+                        });
+                    } else if (response && response.status === 'NOT_READY') {
+                        // Handle NOT_READY status
+                    }
+                });
+            }
+        })
 
 		let delay = 10 // в минутах
 		readyClients.forEach(rdClient => {

@@ -1,5 +1,5 @@
-const { Sequelize } = require('sequelize')
-const { logger } = require('../services')
+const Sequelize = require('sequelize')
+const { logger } = require('../services/logger')
 const { user, pass, host, port, dbname } = require('../config.json').database
 
 function getConnectionString() {
@@ -8,6 +8,7 @@ function getConnectionString() {
 
 function sequelizeConnection () {
 	let connStr = getConnectionString()
+	console.log(`DB CONNECTION STRING: ${connStr}`)
 
 	const db = new Sequelize(connStr, {
 		logging: false
@@ -25,6 +26,9 @@ function sequelizeConnection () {
 
 const database = sequelizeConnection()
 
-module.exports = {
-	database
-}
+if (!database) {
+	console.log('Ошибка при подключении к базе данных');
+	} else {
+	module.exports = { database }
+	}
+

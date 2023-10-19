@@ -1,17 +1,17 @@
 {
-	"hostname": "192.168.91.187",
+	"hostname": "192.168.91.148",
 	"port": 9099,
 	"logFile": "logs/vas-server.log",
 	"logUploadTime": {
-		"hours": 2,
-		"minutes": 0,
+		"hours": 7,
+		"minutes": 51,
 		"seconds": 0
 	},
 	"storeFile": "store.json",
 	"database": {
 		"dbname": "voice_alarm_system_db",
 		"user": "postgres",
-		"pass": "admin_2023",
+		"pass": "12qwASZX",
 		"host": "localhost",
 		"port": 5432
 	}

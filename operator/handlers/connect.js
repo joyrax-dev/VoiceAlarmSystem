@@ -1,5 +1,5 @@
 const { hostname, port, client } = require('../config.json')
-const { logger } = require('../services')
+const { logger } = require('../services/logger')
 
 module.exports = (socket) => {
 	return function connect () {

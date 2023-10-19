@@ -1,5 +1,5 @@
 const { GlobalKeyboardListener } = require("@futpib/node-global-key-listener")
-const { logger } = require('../services')
+const { logger } = require('../services/logger')
 
 const keyboard = new GlobalKeyboardListener({
 	windows: {

@@ -2,10 +2,12 @@ const { createServer } = require('http')
 const { Server } = require('socket.io')
 const { readdirSync, statSync, unlink, access, constants } = require('fs')
 const { join, extname } = require('path')
-const { database, Logs } = require('./database')
+const { Logs } = require('./database/models/Logs')
+const { database } = require('./database/connection')
 const { handlersOperators, handlersSpeakers, handlersGeneral } = require('./handlers')
 const { hostname, port, logUploadTime, storeFile } = require('./config.json')
-const { logger, toolchain, logExporter } = require('./services')
+const { toolchain, logExporter } = require('./services')
+const { logger } = require('./services/logger')
 
 // Проверка таблицы в базе данных
 Logs.sync({force: false}).then(() => {
@@ -65,55 +67,7 @@ speakersNamespace.on('connection', (socket) => {
 	attachHandlers(socket, { operatorsNamespace, speakersNamespace }, speakerHandlers)
 })
 
-// // Автоматическая выгрузка логов в базу данных и последуещее их удаление с утсройства
-// const startTimer = (callback) => {
-// 	const today = new Date()
-// 	const targetTime = new Date(
-// 		today.getFullYear(),
-// 		today.getMonth(),
-// 		today.getDate(),
-// 		logUploadTime.hours,
-// 		logUploadTime.minutes,
-// 		logUploadTime.seconds
-// 	)
-
-// 	if (today > targetTime) {
-// 		targetTime.setDate(today.getDate() + 1)
-// 	}
-
-// 	const timeDifference = targetTime - today
-
-// 	setTimeout(() => {
-// 		const currentDateTime = new Date()
-// 		logger.info(`Starting timer [datetime=${currentDateTime}]`)
-
-// 		callback()
-// 		setInterval(callback, 24 * 60 * 60 * 1000)
-// 	}, timeDifference)
-// }
-
-// startTimer(() => {
-// 	logger.info(`Starting upload logs [date=${new Date()}]`)
-// 	const dir = join(process.cwd(), 'logs')
-// 	const files = readdirSync(dir).filter((file) => extname(file) !== '.log')
-
-// 	files.forEach((file) => {
-// 		const filePath = join(dir, file)
-// 		const logs = logger.parselogFile(filePath)
-
-// 		logger.uploadLogs(logs, () => {
-// 			logger.info(`Uploaded log file [file=${file}] [endOperation=${new Date()}]`)
-
-// 			unlink(filePath, (err) => {
-// 				if (err) {
-// 					logger.error(`Error while deleting the file [file=${file}]`)
-// 				}
-// 			})
-// 		})
-// 	})
-// })
-
-logExporter.start({ operatorsNamespace, speakersNamespace })
+logExporter.start({ operatorsNamespace, speakersNamespace }, io)
 
 // Здесь можно на пример пробовать запустить батник для рестарта сервера или что-то подобного
 process.on('exit', (code) => {
