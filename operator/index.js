@@ -30,18 +30,20 @@ recorder.stream().on('data', audio => {
 })
 
 keyboard.addListener(function (e, down) {
-    if (e.state == "DOWN" && e.name == "SPACE" && (down["LEFT ALT"] || down["RIGHT ALT"])) {
-        if (recorder._stream.isPaused()) {
-            recorder._stream.resume()
-        }
+    if (e.state == "DOWN" && e.name == "SPACE") { //  && (down["LEFT ALT"] || down["RIGHT ALT"])
+        // if (recorder._stream.isPaused()) {
+        //     recorder._stream.resume()
+        // }
+        recorder._stream.resume()
     }
 })
 
 keyboard.addListener(function (e, down) {
-    if (e.state == "UP" && e.name == "SPACE" && (down["LEFT ALT"] || down["RIGHT ALT"])) {
-        if (!recorder._stream.isPaused()) {
-            recorder._stream.pause()
-        }
+    if (e.state == "UP" && e.name == "SPACE") { //  && (down["LEFT ALT"] || down["RIGHT ALT"])
+        // if (!recorder._stream.isPaused()) {
+        //     recorder._stream.pause()
+        // }
+        recorder._stream.pause()
     }
 })
 

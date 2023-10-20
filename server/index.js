@@ -3,12 +3,13 @@ const { Server } = require('socket.io')
 const { readdirSync, statSync, unlink, access, constants } = require('fs')
 const { join, extname } = require('path')
 const { Logs } = require('./database/models/Logs')
-const { database } = require('./database/connection')
+// const { database } = require('./database/connection')
 const { handlersOperators, handlersSpeakers, handlersGeneral } = require('./handlers')
 const { hostname, port, logUploadTime, storeFile } = require('./config.json')
 const { toolchain, logExporter } = require('./services')
 const { logger } = require('./services/logger')
 
+/*
 // Проверка таблицы в базе данных
 Logs.sync({force: false}).then(() => {
 	logger.info(`Table exist [table=${Logs.tableName}]`)
@@ -22,6 +23,7 @@ Logs.sync({force: false}).then(() => {
 		logger.error(`Error in table re-creation [table=${Logs.tableName}] [error=${err}]`)
 	})
 })
+*/
 
 // Удаление файла store.json на запуске сервера
 const storePath = join(process.cwd(), storeFile)
@@ -67,7 +69,7 @@ speakersNamespace.on('connection', (socket) => {
 	attachHandlers(socket, { operatorsNamespace, speakersNamespace }, speakerHandlers)
 })
 
-logExporter.start({ operatorsNamespace, speakersNamespace }, io)
+// logExporter.start({ operatorsNamespace, speakersNamespace }, io)
 
 // Здесь можно на пример пробовать запустить батник для рестарта сервера или что-то подобного
 process.on('exit', (code) => {
