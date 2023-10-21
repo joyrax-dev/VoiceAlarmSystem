@@ -10,9 +10,9 @@ new Command('start')
 		const socket = require('./socket')()
 
 		const clients = []
-		clients['operator'] = require('./operator')
-		clients['speaker'] = require('./speaker')
+		clients['operator'] = () => require('./operator')
+		clients['speaker'] = () => require('./speaker')
 
-		clients[type](socket)
+		clients[type]()(socket)
 	})
 	.parse(process.argv)

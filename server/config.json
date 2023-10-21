@@ -7,7 +7,7 @@
 		"minutes": 0,
 		"seconds": 0
 	},
-	"store": "store.json",
+	"storeFile": "store.json",
 	"database": {
 		"dbname": "voice_alarm_system_db",
 		"user": "postgres",

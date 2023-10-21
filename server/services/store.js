@@ -1,9 +1,9 @@
-const { store } = require('../config.json')
+const { storeFile } = require('../config.json')
 const { Store } = require('data-store')
 const { join } = require('path')
 
-const store = new Store(store, {
-	path: join(process.cwd(), store)
+const store = new Store(storeFile, {
+	path: join(process.cwd(), storeFile)
 })
 
 module.exports = {

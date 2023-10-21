@@ -2,11 +2,11 @@ const { createServer } = require('http')
 const { Server } = require('socket.io')
 const { unlink, access, constants } = require('fs')
 const { join } = require('path')
-const { Logs } = require('./database/models/Logs')
+// const { Logs } = require('./database/models/Logs')
 // const { database } = require('./database/connection')
 const { handlersOperators, handlersSpeakers, handlersGeneral } = require('./handlers')
-const { hostname, port, store } = require('./config.json')
-const { toolchain, logExporter } = require('./services')
+const { hostname, port, storeFile } = require('./config.json')
+const { toolchain } = require('./services/toolchain')
 const { logger } = require('./services/logger')
 
 /*
@@ -26,7 +26,7 @@ Logs.sync({force: false}).then(() => {
 */
 
 // Удаление файла store.json на запуске сервера
-const storePath = join(process.cwd(), store)
+const storePath = join(process.cwd(), storeFile)
 access(storePath, constants.F_OK, err => {
 	if (!err) {
 		unlink(storePath, () => {
