@@ -1,5 +1,5 @@
-const { speaker } = require('../services/speaker')
-const { logger } = require('../services/logger')
+const { speaker } = require('../../services/speaker')
+const { logger } = require('../../services/logger')
 
 module.exports = (socket) => {
 	return function play_audio_data (audio) {

@@ -1,0 +1,15 @@
+{
+	"hostname": "192.168.91.148",
+	"port": 9099,
+	"logs": {
+		"speaker": "logs/speaker/vas.log",
+		"operator": "logs/operator/vas.log"
+	},
+	"recorder": "C:/Program Files (x86)/sox-14-4-1/sox.exe",
+	"location": "RESEPTION",
+	"keyList": {
+		"0": "ALL",
+		"1": ["ABK5", "MODULE1"],
+		"2": ["ABK4"]
+	}
+}

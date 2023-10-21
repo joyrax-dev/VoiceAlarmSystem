@@ -1,11 +1,11 @@
 const log4js = require('log4js')
-const { logFile } = require('../config.json')
+const { logs } = require('../config.json')
 
 log4js.configure({
 	appenders: {
 		everything: {
 			type: 'dateFile',
-			filename: logFile,
+			filename: logs[process.env.type],
 			pattern: 'yyyy-MM-dd'
 		},
 		console: {

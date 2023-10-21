@@ -1,9 +1,0 @@
-{
-	"hostname": "192.168.91.148",
-	"port": 9099,
-	"logFile": "logs/vas-server.log",
-	"client": {
-		"type": "speaker",
-		"location": "ABK5"
-	}
-}

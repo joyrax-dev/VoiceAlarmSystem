@@ -35,7 +35,7 @@ const ifmatches = (file, skip = []) => {
 }
 
 module.exports = {
-	handlers: () => {
-		return requireHandlers(__dirname, ['index.js'])
-	}
+	operatorHandlers: () => requireHandlers(join(__dirname, 'operator')),
+	speakerHandlers: () => requireHandlers(join(__dirname, 'speaker')),
+	generalHandlers: () => requireHandlers(join(__dirname, 'general'))
 }
