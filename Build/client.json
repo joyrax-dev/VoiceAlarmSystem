@@ -1,0 +1,14 @@
+{
+    "Host": "10.1.0.61",
+    "Port": 9909,
+    "Client": {
+        "Location": "ABK4",
+        "Type": "SPEAKER"
+    },
+    "RecorderPath": "C:/Program Files (x86)/sox-14-4-1/sox.exe",
+    "Shortcuts": {
+        "0": "ALL",
+        "1": ["ABK5", "MODULE1"],
+        "2": ["ABK4"]
+    }
+}

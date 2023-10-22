@@ -1,0 +1,1 @@
+{"version":3,"file":"ConnectError.js","sourceRoot":"","sources":["../../../Source/Client/Handlers/ConnectError.ts"],"names":[],"mappings":";;;AAGa,QAAA,OAAO,GAA0B;IAC1C,OAAO,EAAE,UAAS,MAAc;QAC5B,OAAO,SAAS,aAAa,CAAC,GAAU;YACpC,OAAO,CAAC,GAAG,CAAC,sBAAsB,CAAC,CAAA;QACvC,CAAC,CAAA;IACL,CAAC;CACJ,CAAA"}

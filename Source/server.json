@@ -1,0 +1,5 @@
+{
+    "Host": "10.1.0.61",
+    "Port": 9909,
+    "LogFile": "Logs/Server.log"
+}
