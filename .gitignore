@@ -133,6 +133,7 @@ dist
 # Custom ignorable
 package-lock.json
 AuthorizedUsers.json
+VoiceAlarmSystem.exe
 server/package-lock.json
 operator/package-lock.json
 speaker/package-lock.json
