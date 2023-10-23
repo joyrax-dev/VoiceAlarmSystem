@@ -68,12 +68,9 @@ function InitializationKeyboard(): void {
             if (event.state == 'UP' && event.name == key && ReadyStart == ReadyStatus.No) {
                 ReadyStart = ReadyStatus.Maybe
                 
-                setTimeout(() => {
-                    Recorder._stream.pause()
-                }, 250)
+                Recorder._stream.pause()
 
                 setTimeout(() => {
-                    Recorder._stream.pause()
                     ReadyStart = ReadyStatus.Yes
                     Playback.emit('end_record')
                 }, 750)
