@@ -1,9 +1,19 @@
-import { connect as SocketConnect, Socket } from 'socket.io-client'
-import { Keyboard, IGlobalKeyEvent, IGlobalKeyDownMap } from './Keyboard'
-import { StartHandlers } from './Handlers'
+import { readFileSync } from 'fs'
+import { join } from 'path'
+import { Socket, connect as SocketConnect } from 'socket.io-client'
 import { IClientInfo } from '../Shared/IClientInfo'
+import { ReadyStatus } from '../Shared/ReadyStatus'
+import { Client, Host, Port, Shortcuts } from '../client.json'
+import { StartHandlers } from './Handlers'
+import { IGlobalKeyDownMap, IGlobalKeyEvent, Keyboard } from './Keyboard'
+import { Playback } from './PlaybackEmitter'
 import { Recorder } from './Recorder'
-import { Host, Port, Client, Shortcuts } from '../client.json'
+import { speaker } from './Speaker'
+
+let Recipient: string | string[] = ''
+let ReadyStart: ReadyStatus = ReadyStatus.Yes
+const StartRecordWav = readFileSync(join(__dirname, '../SFX/start_record.wav'))
+const EndRecordWav = readFileSync(join(__dirname, '../SFX/end_record.wav'))
 
 export default function Start() {
     console.log(`Startup client [type=${Client.Type}] [location=${Client.Location}]`)
@@ -19,32 +29,54 @@ export default function Start() {
 
     socket.connect()
 
-    //#region Recording and sending audio data
-    let recipient: string | string[] = ''
+    Playback.on('start_record', () => {
+        speaker.write(StartRecordWav)
+        console.log('start record')
+    })
+
+    Playback.on('end_record', () => {
+        speaker.write(EndRecordWav)
+        console.log('end record')
+    })
 
     Recorder._stream.on('data', (audio: any) => {
         socket.emit('send_audio', {
             Audio: audio,
-            Locations: recipient,
+            Locations: Recipient,
             Sender: Client as IClientInfo
         })
     })
 
+    InitializationKeyboard()
+}
+
+function InitializationKeyboard(): void {
     function Shortcut(key: string, recip: string | string[]) {
         Keyboard.addListener((event: IGlobalKeyEvent, isDown: IGlobalKeyDownMap) => {
-            if (event.state == 'DOWN' && event.name == key) {
+            if (event.state == 'DOWN' && event.name == key && ReadyStart == ReadyStatus.Yes) {
+                ReadyStart = ReadyStatus.No
+                Playback.emit('start_record')
+
                 setTimeout(() => {
-                    recipient = recip
+                    Recipient = recip
                     Recorder._stream.resume()
                 }, 250)
             }
         })
 
         Keyboard.addListener((event: IGlobalKeyEvent, isDown: IGlobalKeyDownMap) => {
-            if (event.state == 'UP' && event.name == key) {
+            if (event.state == 'UP' && event.name == key && ReadyStart == ReadyStatus.No) {
+                ReadyStart = ReadyStatus.Maybe
+                
                 setTimeout(() => {
                     Recorder._stream.pause()
                 }, 250)
+
+                setTimeout(() => {
+                    Recorder._stream.pause()
+                    ReadyStart = ReadyStatus.Yes
+                    Playback.emit('end_record')
+                }, 750)
             }
         })
     }
@@ -56,5 +88,4 @@ export default function Start() {
     }
 
     Keyboard.run()
-    //#endregion
 }
