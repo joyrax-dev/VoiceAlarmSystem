@@ -1,23 +1,16 @@
 module.exports = {
   apps : [
     {
-      name: 'operator',
-      script: './client/index.js',
-      args: 'start --type operator',
-      max_memory_restart: '2G',
-      restart_delay: 5000
-    },
-    {
-      name: 'speaker',
-      script: './client/index.js',
-      args: 'start --type speaker',
-      max_memory_restart: '2G',
-      restart_delay: 5000
-    },
-    {
       name: 'server',
-      script: './server/index.js',
-      args: '',
+      script: './Build/App.js',
+      args: '--which server',
+      max_memory_restart: '2G',
+      restart_delay: 5000
+    },
+    {
+      name: 'client',
+      script: './Build/App.js',
+      args: '--which client',
       max_memory_restart: '2G',
       restart_delay: 5000
     }
