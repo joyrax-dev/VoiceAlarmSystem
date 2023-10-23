@@ -6,10 +6,7 @@
   "scripts": {
     "build": "tsc -build && xcopy /E /I \"./Source/SFX\" \"./Build/SFX\"",
     "server": "node \"./Build/App.js\" --which server",
-    "client": "node \"./Build/App.js\" --which client",
-    "installSoft": ".\\Scripts\\Install.bat",
-    "packing": ".\\Scripts\\Packing.bat",
-    "setupClient": ".\\Scripts\\SetupClient.bat"
+    "client": "node \"./Build/App.js\" --which client"
   },
   "keywords": [],
   "author": "",

@@ -138,6 +138,7 @@ server/package-lock.json
 operator/package-lock.json
 speaker/package-lock.json
 Build/
+Soft/
 package-lock.json
 store.json
 server/store.json
