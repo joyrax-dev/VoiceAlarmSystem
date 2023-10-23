@@ -2,13 +2,27 @@
 	"Host": "192.168.91.187",
 	"Port": 9909,
 	"Client": {
-        "Location": "ABK4",
+        "Location": "RESEPTION",
         "Type": "OPERATOR"
     },
 	"RecorderPath": "C:/Program Files (x86)/sox-14-4-1/sox.exe",
 	"Shortcuts": {
-		"0": "ALL",
-		"1": ["ABK5", "MODULE1"],
-		"2": ["ABK4"]
+		"NUMPAD 0": "ALL",
+		"NUMPAD 1": ["ABK5"],
+		"NUMPAD 2": ["1HOTEL"],
+		"NUMPAD 3": ["3HOTEL"],
+		"NUMPAD 4": ["ABK4"],
+		"NUMPAD 5": ["ABK4"],
+		"NUMPAD 6": ["ABK4"],
+		"NUMPAD 7": ["ABK4"],
+		"NUMPAD 8": ["ABK4"],
+		"NUMPAD 9": ["ABK4"],
+		"NUMPAD MULTIPLY": ["ABK4"],
+		"NUMPAD EQUALS": ["ABK4"],
+		"NUMPAD DIVIDE": ["ABK4"],
+		"NUMPAD MINUS": ["ABK4"],
+		"NUMPAD PLUS": ["ABK4"],
+		"NUMPAD RETURN": ["ABK4"],
+		"NUMPAD DOT": ["ABK4"]
 	}
 }
