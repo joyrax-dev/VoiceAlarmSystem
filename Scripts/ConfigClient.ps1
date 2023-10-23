@@ -9,4 +9,4 @@ $jsonContent.Host = $HostName
 $jsonContent.Client.Type = $Type
 $jsonContent.Client.Location = $Location
 
-$jsonContent | ConvertTo-Json -Depth 4 | Set-Content -Path "client.json"
+$jsonContent | ConvertTo-Json -Depth 2 | Set-Content -Path "client.json"

@@ -9,8 +9,6 @@ $speakerTemp = "$env:TEMP\speaker.zip"
 # Скачивание speaker з интернета
 Invoke-WebRequest -Uri $speakerUrl -OutFile $speakerTemp
 
-# Установка TS и pm2 глобально
-npm install -g typescript pm2 "uuid@latest"
 
 # Клонирование репозитория проекта
 git clone "https://github.com/joyrax-dev/VoiceAlarmSystem.git"

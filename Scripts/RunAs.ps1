@@ -1,1 +1,1 @@
-Start-Process powershell -ArgumentList "-NoExit", "-Command cd C:/AlarmVoiceSystem" -Verb RunAs
+Start-Process powershell -ArgumentList "-NoExit", "-Command cd C:/VoiceAlarmSystem" -Verb RunAs
