@@ -6,9 +6,10 @@ $speakerUrl = "https://github.com/joyrax-dev/VoiceAlarmSystem/releases/download/
 # Пути к временым файлам speaker
 $speakerTemp = "$env:TEMP\speaker.zip"
 
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
 # Скачивание speaker з интернета
 Invoke-WebRequest -Uri $speakerUrl -OutFile $speakerTemp
-
 
 # Клонирование репозитория проекта
 git clone "https://github.com/joyrax-dev/VoiceAlarmSystem.git"

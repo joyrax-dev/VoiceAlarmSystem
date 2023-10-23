@@ -10,6 +10,8 @@ $nodeTemp    = "$env:TEMP\node.msi"
 $gitTemp     = "$env:TEMP\git.exe"
 $soxTemp     = "$env:TEMP\sox.exe"
 
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
 # Скачивание софта з интернета
 Invoke-WebRequest -Uri $nodeUrl    -OutFile $nodeTemp
 Invoke-WebRequest -Uri $gitUrl     -OutFile $gitTemp
