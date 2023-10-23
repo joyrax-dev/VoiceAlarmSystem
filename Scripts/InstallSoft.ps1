@@ -25,4 +25,4 @@ Start-Process -Wait -FilePath $gitTemp -ArgumentList "/SILENT"
 Start-Process -FilePath $soxTemp -ArgumentList '/S' -Wait
 
 # Добавление SoX в PATH
-[Environment]::SetEnvironmentVariable('PATH', [Environment]::GetEnvironmentVariable('PATH', 'Machine') + ';' + 'C:\Program Files (x86)\sox-14.4.1', 'Machine')
+[Environment]::SetEnvironmentVariable('PATH', [Environment]::GetEnvironmentVariable('PATH', 'Machine') + ';' + 'C:\Program Files (x86)\sox-14-4-1', 'Machine')
