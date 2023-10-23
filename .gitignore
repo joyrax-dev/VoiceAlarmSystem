@@ -132,6 +132,7 @@ dist
 
 # Custom ignorable
 package-lock.json
+AuthorizedUsers.json
 server/package-lock.json
 operator/package-lock.json
 speaker/package-lock.json
