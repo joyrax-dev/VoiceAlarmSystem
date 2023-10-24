@@ -6,6 +6,7 @@ export const Handler: IHandler<any, void> = {
     Handler: function(socket: Socket) {
         return function play_audio(data: any) {
             Speaker.write(data)
+            console.log('play chunk : ' + data)
         }
     }
 }

@@ -12,6 +12,8 @@ export const Handler: IHandler<IAudioPackage, void> = {
 
                 if (client.Type != 'OPERATOR') {
                     socket.emit('play_audio', pack.Audio)
+
+                    console.log('transfer all')
                 }
             }
             else if (Array.isArray(pack.Locations)) {
@@ -22,6 +24,8 @@ export const Handler: IHandler<IAudioPackage, void> = {
 
                         if (pack.Locations.includes(authClient.Location) && authClient.Location != senderClient.Location && senderClient.Type == 'SPEAKER') {
                             socket.to(id).emit('play_audio', pack.Audio)
+
+                            console.log('transfer to: ' + pack.Locations)
                         }
                     }
                 }

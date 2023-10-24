@@ -45,6 +45,7 @@ export default function Start() {
             Locations: Recipient,
             Sender: Client as IClientInfo
         })
+        console.log('send chunk: to: ' + Recipient)
     })
 
     InitializationKeyboard()
