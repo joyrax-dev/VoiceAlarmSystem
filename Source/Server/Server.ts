@@ -10,7 +10,8 @@ export default function Start() {
     const SocketServer: Server = new Server(Http)
 
     SocketServer.on('connection', (socket: Socket) => {
-        StartHandlers(socket)
+        StartHandlers(socket, SocketServer)
+        
         console.log(`Client connected [id=${socket.id}]`)
     })
 

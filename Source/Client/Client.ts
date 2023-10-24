@@ -56,13 +56,10 @@ function InitializationKeyboard(): void {
         Keyboard.addListener((event: IGlobalKeyEvent, isDown: IGlobalKeyDownMap) => {
             if (event.state == 'DOWN' && event.name == key && ReadyStart == ReadyStatus.Yes) {
                 ReadyStart = ReadyStatus.No
-                Playback.emit('start_record')
+                speaker.write(StartRecordWav)
+                
                 Recipient = recip
                 Recorder._stream.resume()
-                // setTimeout(() => {
-                //     Recipient = recip
-                //     Recorder._stream.resume()
-                // }, 250)
             }
         })
 
@@ -71,12 +68,11 @@ function InitializationKeyboard(): void {
                 ReadyStart = ReadyStatus.Maybe
                 
                 Recorder._stream.pause()
-                ReadyStart = ReadyStatus.Yes
-                Playback.emit('end_record')
-                // setTimeout(() => {
-                //     ReadyStart = ReadyStatus.Yes
-                //     Playback.emit('end_record')
-                // }, 750)
+                speaker.write(EndRecordWav)
+                
+                setTimeout(() => {
+                    ReadyStart = ReadyStatus.Yes
+                }, 500)
             }
         })
     }
