@@ -57,11 +57,12 @@ function InitializationKeyboard(): void {
             if (event.state == 'DOWN' && event.name == key && ReadyStart == ReadyStatus.Yes) {
                 ReadyStart = ReadyStatus.No
                 Playback.emit('start_record')
-
-                setTimeout(() => {
-                    Recipient = recip
-                    Recorder._stream.resume()
-                }, 250)
+                Recipient = recip
+                Recorder._stream.resume()
+                // setTimeout(() => {
+                //     Recipient = recip
+                //     Recorder._stream.resume()
+                // }, 250)
             }
         })
 
@@ -70,11 +71,12 @@ function InitializationKeyboard(): void {
                 ReadyStart = ReadyStatus.Maybe
                 
                 Recorder._stream.pause()
-
-                setTimeout(() => {
-                    ReadyStart = ReadyStatus.Yes
-                    Playback.emit('end_record')
-                }, 750)
+                ReadyStart = ReadyStatus.Yes
+                Playback.emit('end_record')
+                // setTimeout(() => {
+                //     ReadyStart = ReadyStatus.Yes
+                //     Playback.emit('end_record')
+                // }, 750)
             }
         })
     }
