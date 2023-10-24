@@ -22,7 +22,7 @@ export const Handler: IHandler<IAudioPackage, void> = {
                         const authClient: IClientInfo = AuthorizedUsers.data[id] as IClientInfo
                         const senderClient: IClientInfo = AuthorizedUsers.get(socket.id)
 
-                        if (pack.Locations.includes(authClient.Location) && authClient.Location != senderClient.Location && senderClient.Type == 'SPEAKER') {
+                        if (pack.Locations.includes(authClient.Location) && authClient.Location != senderClient.Location && senderClient.Type == 'OPERATOR') {
                             socket.to(id).emit('play_audio', pack.Audio)
 
                             console.log('transfer to: ' + pack.Locations)
