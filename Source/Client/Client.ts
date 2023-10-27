@@ -6,13 +6,13 @@ import { ReadyStatus } from '../Shared/ReadyStatus'
 import { Client, Host, Port, Shortcuts } from '../client.json'
 import { StartHandlers } from './Handlers'
 import { IGlobalKeyDownMap, IGlobalKeyEvent, Keyboard } from './Keyboard'
-import { Playback } from './PlaybackEmitter'
 import { Recorder } from './Recorder'
 import { speaker } from './Speaker'
+import player from 'node-wav-player'
 
 let Recipient: string | string[] = ''
 let ReadyStart: ReadyStatus = ReadyStatus.Yes
-const StartRecordWav = readFileSync(join(__dirname, '../SFX/start_record.wav'))
+const StartRecordWav = readFileSync(join(__dirname, '../SFX/uvedomlenie-o-poluchennoy-pochte.wav'))
 const EndRecordWav = readFileSync(join(__dirname, '../SFX/end_record.wav'))
 
 export default function Start() {
@@ -28,16 +28,6 @@ export default function Start() {
     StartHandlers(socket)
 
     socket.connect()
-
-    Playback.on('start_record', () => {
-        speaker.write(StartRecordWav)
-        console.log('start record')
-    })
-
-    Playback.on('end_record', () => {
-        speaker.write(EndRecordWav)
-        console.log('end record')
-    })
 
     Recorder._stream.on('data', (audio: any) => {
         socket.emit('send_audio', {
@@ -56,10 +46,17 @@ function InitializationKeyboard(): void {
         Keyboard.addListener((event: IGlobalKeyEvent, isDown: IGlobalKeyDownMap) => {
             if (event.state == 'DOWN' && event.name == key && ReadyStart == ReadyStatus.Yes) {
                 ReadyStart = ReadyStatus.No
-                speaker.write(StartRecordWav)
+
+                // speaker.write(StartRecordWav)
+                player.play({
+                    path: join(__dirname, '../SFX/uvedomlenie-o-poluchennoy-pochte.wav')
+                })
+                setTimeout(() => {
+                    Recipient = recip
+                    Recorder._stream.resume()
+                }, 100)
                 
-                Recipient = recip
-                Recorder._stream.resume()
+                
             }
         })
 
@@ -68,11 +65,14 @@ function InitializationKeyboard(): void {
                 ReadyStart = ReadyStatus.Maybe
                 
                 Recorder._stream.pause()
-                speaker.write(EndRecordWav)
+                // speaker.write(EndRecordWav)
+                player.play({
+                    path: join(__dirname, '../SFX/end_record.wav')
+                })
                 
                 setTimeout(() => {
                     ReadyStart = ReadyStatus.Yes
-                }, 500)
+                }, 1000)
             }
         })
     }
