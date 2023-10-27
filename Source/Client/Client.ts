@@ -12,7 +12,7 @@ import player from 'node-wav-player'
 
 let Recipient: string | string[] = ''
 let ReadyStart: ReadyStatus = ReadyStatus.Yes
-const StartRecordWav = readFileSync(join(__dirname, '../SFX/uvedomlenie-o-poluchennoy-pochte.wav'))
+const StartRecordWav = readFileSync(join(__dirname, '../SFX/start_record.wav'))
 const EndRecordWav = readFileSync(join(__dirname, '../SFX/end_record.wav'))
 
 export default function Start() {
@@ -49,7 +49,7 @@ function InitializationKeyboard(): void {
 
                 // speaker.write(StartRecordWav)
                 player.play({
-                    path: join(__dirname, '../SFX/uvedomlenie-o-poluchennoy-pochte.wav')
+                    path: join(__dirname, '../SFX/start_record.wav')
                 })
                 setTimeout(() => {
                     Recipient = recip
