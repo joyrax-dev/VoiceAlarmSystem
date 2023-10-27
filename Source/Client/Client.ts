@@ -47,7 +47,6 @@ function InitializationKeyboard(): void {
             if (event.state == 'DOWN' && event.name == key && ReadyStart == ReadyStatus.Yes) {
                 ReadyStart = ReadyStatus.No
 
-                // speaker.write(StartRecordWav)
                 player.play({
                     path: join(__dirname, '../SFX/start_record.wav')
                 })
@@ -64,8 +63,10 @@ function InitializationKeyboard(): void {
             if (event.state == 'UP' && event.name == key && ReadyStart == ReadyStatus.No) {
                 ReadyStart = ReadyStatus.Maybe
                 
-                Recorder._stream.pause()
-                // speaker.write(EndRecordWav)
+                setTimeout(() => {
+                    Recorder._stream.pause()
+                }, 100)
+                
                 player.play({
                     path: join(__dirname, '../SFX/end_record.wav')
                 })
