@@ -61,7 +61,7 @@ Next, you can start both client and server in two ways
 
 | Script | Functionality |
 | ------ | ------------- |
-| Scripts/StartClient.ps1 | Startup Client |
-| Scripts/StartServer.ps1 | Startup Server |
+| Scripts/StartClient.ps1 | Startup Client with pm2 |
+| Scripts/StartServer.ps1 | Startup Server with pm2 |
 
 
