@@ -40,6 +40,35 @@ Also before starting the project you need to make the initial configuration of t
 | Scripts/ConfigClient.ps1 | Client Configuration |
 | Scripts/ConfigServer.ps1 | Server Configuration |
 
+- Client configuration
+```json
+{
+	{
+		"Host": "localhost",         /* Server IP or Hostname */
+		"Port": 9909,                /* Server port */
+		"Client": {                  /* Client setup */
+			"Location": "RESEPTION", /* Client location */
+			"Type": "OPERATOR"       /*  Client type */
+		},
+		"RecorderPath": "C:/Program Files (x86)/sox-14-4-1/sox.exe", /* path to installed SoX */
+		"Shortcuts": {                                               /* Keyboard setup */
+			"NUMPAD 0": "ALL",                                       /* "ALL" - For all clients */
+			"NUMPAD 1": ["Location1"],                               /* For specific client */
+			"NUMPAD 1": ["Location1", "Location2", "Location3"]      /* For specific clients */
+		}
+	}
+}
+```
+
+- Server configuration
+```json
+{
+    "Host": "192.168.91.148",    /* Server IP or Hostname */
+    "Port": 9909,                /* Server port */
+    "LogFile": "Logs/Server.log" /* Relative path logs file (In development) */
+}
+```
+
 ##### Startup
 
 After a clean installation, it is absolutely necessary to compile the project
