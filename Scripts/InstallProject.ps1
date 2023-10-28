@@ -1,14 +1,5 @@
 cd "C:/Users/admin/Desktop"
 
-Write-Host "Проверка наличия прав администратора..."
-if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-    Write-Warning "Недостаточно прав для выполнения этого скрипта."
-    Start-Process Powershell -ArgumentList "./InstallProject.ps1" -Verb RunAs
-    Break
-} else {
-    Write-Host "Права администратора есть – продолжить скрипт..." -ForegroundColor Green
-}
-
 # Установка URL speaker
 $speakerUrl = "https://github.com/joyrax-dev/VoiceAlarmSystem/releases/download/dependencies/speaker.zip"
 
