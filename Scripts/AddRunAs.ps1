@@ -1,2 +1,0 @@
-# Установите значение параметра "По умолчанию" для существующего раздела реестра
-Set-ItemProperty -Path "HKEY_CLASSES_ROOT\Microsoft.PowerShellScript.1\shell\runas\command" -Name "(Default)" -Value "powershell.exe -Command `"if((Get-ExecutionPolicy ) -ne 'AllSigned') { Set-ExecutionPolicy -Scope Process Bypass }; & '%1'`""

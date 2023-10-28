@@ -1,18 +1,5 @@
 cd "C:/Users/admin/Desktop"
 
-Write-Host "Проверка наличия прав администратора..."
-if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`
-	[Security.Principal.WindowsBuiltInRole] "Administrator")) 
-{
-	Write-Warning "Недостаточно прав для выполнения этого скрипта."
-	Start-Process Powershell -ArgumentList "./InstallSoft.ps1" -Verb RunAs
-	Break
-}
-else 
-{
-	Write-Host "Права администратора есть – продолжить скрипт..." -ForegroundColor Green
-}
-
 # Установка URL софта
 $nodeUrl    = "https://nodejs.org/dist/v20.0.0/node-v20.0.0-x64.msi"
 $gitUrl     = "https://github.com/git-for-windows/git/releases/download/v2.33.0.windows.2/Git-2.33.0.2-64-bit.exe"

@@ -1,4 +1,4 @@
-cd "C:/VoiceAlarmSystem/Source"
+cd "C:/Users/admin/Desktop/VoiceAlarmSystem/Source"
 
 $HostName = Read-Host "Host"
 $Type = Read-Host "Type"

@@ -14,7 +14,9 @@ Invoke-WebRequest -Uri $speakerUrl -OutFile $speakerTemp
 # Клонирование репозитория проекта
 git clone "https://github.com/joyrax-dev/VoiceAlarmSystem.git"
 
-cd "C:/Users/admin/Desktop/VoiceAlarmSystem"
+# Переходим в папку проекта
+cd "./VoiceAlarmSystem"
+
 # Раззархивация модуля speaker
 Expand-Archive -Path $speakerTemp -DestinationPath './node_modules'
 
