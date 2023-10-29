@@ -7,7 +7,8 @@ export const Handler: IHandler<IClientInfo, void> = {
     Handler: function(socket: Socket) {
         return function auth(Info: IClientInfo) {
             AuthorizedUsers.set(socket.id, Info)
-            console.log(`Client accounted [id=${socket.id}] [location=${Info.Location}] [type=${Info.Type}]`)
+
+            console.log(`Client accounted [id=${socket.id}] [location=${Info?.Location}] [type=${Info?.Type}]`)
         }
     }
 }

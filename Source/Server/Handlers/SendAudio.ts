@@ -8,21 +8,22 @@ export const Handler: IHandler<IAudioPackage, void> = {
     Handler: function(socket: Socket, server: Server) {
         return function send_audio(pack: IAudioPackage) {
             if (typeof pack.Locations === 'string' && pack.Locations == 'ALL') {
-                // let client: IClientInfo = AuthorizedUsers.get(socket.id)
-
                 socket.broadcast.emit('play_audio', pack.Audio)
-                console.log('transfer all')
+                console.log('Transfer to ALL')
             }
             else if (Array.isArray(pack.Locations)) {
-                for (let id in AuthorizedUsers.data) {
-                    if (AuthorizedUsers.data.hasOwnProperty(id)) {
-                        const authClient: IClientInfo = AuthorizedUsers.data[id] as IClientInfo
-                        const senderClient: IClientInfo = AuthorizedUsers.get(socket.id)
+                const sender: IClientInfo = AuthorizedUsers.get(socket.id)
 
-                        if (pack.Locations.includes(authClient.Location) && authClient.Location != senderClient.Location && senderClient.Type == 'OPERATOR') {
-                            server.to(id).emit('play_audio', pack.Audio)
+                if (sender.Type != 'OPERATOR') return
+                
+                for (const client_id of Object.keys(AuthorizedUsers.data)) {
+                    const client: IClientInfo = AuthorizedUsers.data[client_id] as IClientInfo
 
-                            console.log('transfer to: ' + pack.Locations)
+                    if (pack.Locations.includes(client.Location)) {
+                        if (client.Location != sender.Location && client.Type != 'OPERATOR') {
+                            server.to(client_id).emit('play_audio', pack.Audio)
+
+                            console.log(`Transfer to: ${pack.Locations}`)
                         }
                     }
                 }

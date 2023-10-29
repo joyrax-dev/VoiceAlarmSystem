@@ -8,7 +8,8 @@ export const Handler: IHandler<void, void> = {
         return function deauth() {
             const client: IClientInfo = AuthorizedUsers.get(socket.id)
             AuthorizedUsers.del(socket.id)
-            console.log(`Client has been removed from the system [id=${socket.id}] [type=${client.Type}] [location=${client.Location}]`)
+            
+            console.log(`Client has been removed from the system [id=${socket.id}] [type=${client?.Type}] [location=${client?.Location}]`)
         }
     }
 }

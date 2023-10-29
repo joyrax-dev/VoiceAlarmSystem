@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs'
+import player from 'node-wav-player'
 import { join } from 'path'
 import { Socket, connect as SocketConnect } from 'socket.io-client'
 import { IClientInfo } from '../Shared/IClientInfo'
@@ -7,13 +7,9 @@ import { Client, Host, Port, Shortcuts } from '../client.json'
 import { StartHandlers } from './Handlers'
 import { IGlobalKeyDownMap, IGlobalKeyEvent, Keyboard } from './Keyboard'
 import { Recorder } from './Recorder'
-import { speaker } from './Speaker'
-import player from 'node-wav-player'
 
 let Recipient: string | string[] = ''
 let ReadyStart: ReadyStatus = ReadyStatus.Yes
-const StartRecordWav = readFileSync(join(__dirname, '../SFX/start_record.wav'))
-const EndRecordWav = readFileSync(join(__dirname, '../SFX/end_record.wav'))
 
 export default function Start() {
     console.log(`Startup client [type=${Client.Type}] [location=${Client.Location}]`)
@@ -23,6 +19,11 @@ export default function Start() {
         reconnection: true,
         reconnectionAttempts: Infinity,
         reconnectionDelay: 5000
+    })
+    
+    process.on('exit', (code: number) => {
+        socket.disconnect()
+        console.log(`Client exited with code: ${code}`)
     })
 
     StartHandlers(socket)
@@ -38,7 +39,9 @@ export default function Start() {
         console.log('send chunk: to: ' + Recipient)
     })
 
-    InitializationKeyboard()
+    if (Client.Type == 'OPERATOR') {
+        InitializationKeyboard()
+    }
 }
 
 function InitializationKeyboard(): void {
