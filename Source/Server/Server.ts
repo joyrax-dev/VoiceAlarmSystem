@@ -12,10 +12,6 @@ export default function Start() {
     SocketServer.on('connection', (socket: Socket) => {
         StartHandlers(socket, SocketServer)
 
-        setInterval(() => {
-            socket.emit('get_latency')
-        }, 5000)
-        
         console.log(`Client connected [id=${socket.id}]`)
     })
 
