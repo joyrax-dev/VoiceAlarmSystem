@@ -29,5 +29,3 @@ Start-Process -FilePath $soxTemp -ArgumentList '/S' -Wait
 # Добавление SoX в PATH
 [Environment]::SetEnvironmentVariable('PATH', [Environment]::GetEnvironmentVariable('PATH', 'Machine') + ';' + 'C:\Program Files (x86)\sox-14-4-1', 'Machine')
 
-# Установка TS и pm2 глобально
-Start-Process Powershell -ArgumentList '-Command "npm install -g typescript pm2 uuid@7"' -Verb RunAs
