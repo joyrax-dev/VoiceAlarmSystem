@@ -6,7 +6,9 @@
   "scripts": {
     "build": "tsc -build && xcopy /E /I \"./Source/SFX\" \"./Build/SFX\"",
     "server": "node \"./Build/App.js\" --which server",
-    "client": "node \"./Build/App.js\" --which client"
+    "client": "node \"./Build/App.js\" --which client",
+    "server_pm2": "pm2 start ecosystem.config.js --only server",
+    "client_pm2": "pm2 start ecosystem.config.js --only client"
   },
   "keywords": [],
   "author": "",
