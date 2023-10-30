@@ -15,7 +15,7 @@ export const Handler: IHandler<IAudioPackage, void> = {
                 const sender: IClientInfo = AuthorizedUsers.get(socket.id)
 
                 if (sender.Type != 'OPERATOR') return
-                
+
                 for (const client_id of Object.keys(AuthorizedUsers.data)) {
                     const client: IClientInfo = AuthorizedUsers.data[client_id] as IClientInfo
 

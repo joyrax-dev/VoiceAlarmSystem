@@ -5,25 +5,5 @@
         "Location": "RESEPTION",
         "Type": "OPERATOR"
     },
-	"RecorderPath": "C:/Program Files (x86)/sox-14-4-1/sox.exe",
-	"Shortcuts": {
-		"NUMPAD 0": "ALL",
-		"NUMPAD 1": ["1HOTEL"],
-		"NUMPAD 2": ["ABK2"],
-		"NUMPAD 3": ["ABK3"],
-		"NUMPAD 4": ["ABK4"],
-		"NUMPAD 5": ["ABK5"],
-		"NUMPAD 6": ["1MODUL"],
-		"NUMPAD 7": ["3MODUL"],
-		"NUMPAD 8": ["4MODUL"],
-		"NUMPAD 9": ["5MODUL"],
-		"NUMPAD MULTIPLY": [""],
-		"NUMPAD EQUALS": [""],
-		"NUMPAD DIVIDE": ["7MODUL"],
-		"NUMPAD MINUS": [""],
-		"NUMPAD PLUS": ["6MODUL"],
-		"BACKSPACE": ["2MODUL"],
-		"NUMPAD RETURN": [""],
-		"NUMPAD DOT": ["3HOTEL"]
-	}
+	"RecorderPath": "C:/Program Files (x86)/sox-14-4-1/sox.exe"
 }

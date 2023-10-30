@@ -3,7 +3,8 @@ import { join } from 'path'
 import { Socket, connect as SocketConnect } from 'socket.io-client'
 import { IClientInfo } from '../Shared/IClientInfo'
 import { ReadyStatus } from '../Shared/ReadyStatus'
-import { Client, Host, Port, Shortcuts } from '../client.json'
+import { Client, Host, Port } from '../client.json'
+import { Shortcuts } from '../shortcuts.json'
 import { StartHandlers } from './Handlers'
 import { IGlobalKeyDownMap, IGlobalKeyEvent, Keyboard } from './Keyboard'
 import { Recorder } from './Recorder'
@@ -68,7 +69,7 @@ function InitializationKeyboard(): void {
                 
                 setTimeout(() => {
                     Recorder._stream.pause()
-                }, 100)
+                }, 200)
                 
                 player.play({
                     path: join(__dirname, '../SFX/end_record.wav')
