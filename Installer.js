@@ -2,7 +2,7 @@ const { spawn, exec } = require('child_process')
 const { access, constants, rmdirSync, readFileSync, writeFileSync } = require('fs')
 const { join } = require('path')
 
-const appUrl = `https://github.com/joyrax-dev/VoiceAlarmSystem/releases/download/test_installer/VoiceAlarmSystem.zip`
+const appUrl = `https://github.com/joyrax-dev/VoiceAlarmSystem/releases/download/installer_v3/VoiceAlarmSystem.zip`
 
 const apploc = `C:/Users/specialist/Desktop`
 const appPath = join(apploc, `VoiceAlarmSystem`)
