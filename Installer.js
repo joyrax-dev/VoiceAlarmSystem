@@ -4,7 +4,7 @@ const { join } = require('path')
 
 const appUrl = `https://github.com/joyrax-dev/VoiceAlarmSystem/releases/download/installer_v3/VoiceAlarmSystem.zip`
 
-const apploc = `C:/Users/specialist/Desktop`
+const apploc = `C:/Users/admin/Desktop`
 const appPath = join(apploc, `VoiceAlarmSystem`)
 
 const powershellUnarchive = `
