@@ -2,7 +2,7 @@
   "name": "voicealarmsystem",
   "version": "1.0.0",
   "description": "",
-  "main": "App.js",
+  "main": "Build/App.js",
   "scripts": {
     "build": "tsc -build && xcopy /E /I \"./Source/SFX\" \"./Build/SFX\"",
     "server": "node \"./Build/App.js\" --which server",
