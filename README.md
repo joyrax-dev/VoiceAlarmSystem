@@ -2,9 +2,10 @@
 
 ## Installation
 
-Download releases/latest scripts
+Download releases/latest scripts.
 
-> It is mandatory to run all scripts with administrator rights
+> It is mandatory to run all scripts with administrator rights.
+> And also note that the default installation location of the scripts: ``` C:/Users/admin/Desktop ```.
 
 ##### Setting up windows
 - AccessPowerShell.bat
@@ -33,7 +34,7 @@ Download releases/latest scripts
 
 Also before starting the project you need to make the initial configuration of the client, or the server, depending on what you need.
 
-> You are considered to be in the project folder
+> You are considered to be in the project folder.
 
 | Script | Functionality |
 | ------ | ------------- |
@@ -50,12 +51,7 @@ Also before starting the project you need to make the initial configuration of t
 			"Location": "RESEPTION", /* Client location */
 			"Type": "OPERATOR"       /*  Client type */
 		},
-		"RecorderPath": "C:/Program Files (x86)/sox-14-4-1/sox.exe", /* path to installed SoX */
-		"Shortcuts": {                                               /* Keyboard setup */
-			"NUMPAD 0": "ALL",                                       /* "ALL" - For all clients */
-			"NUMPAD 1": ["Location1"],                               /* For specific client */
-			"NUMPAD 1": ["Location1", "Location2", "Location3"]      /* For specific clients */
-		}
+		"RecorderPath": "C:/Program Files (x86)/sox-14-4-1/sox.exe" /* path to installed SoX */
 	}
 }
 ```
@@ -69,28 +65,64 @@ Also before starting the project you need to make the initial configuration of t
 }
 ```
 
-##### Startup
+- Shortcut configuration
+```json
+{
+	"Shortcuts": {
+		/* "ALL" - For all clients */
+		"NUMPAD 0": "ALL",
 
-After a clean installation, it is absolutely necessary to compile the project
+		/* For specific client */
+		"NUMPAD 1":   ["1HOTEL"],
+		"NUMPAD DOT": ["3HOTEL"],
+
+		/* For specific clients */
+		"NUMPAD MULTIPLY": ["1MODUL", "2MODUL", "3MODUL", "4MODUL", "5MODUL", "6MODUL", "7MODUL"]
+	}
+}
+```
+
+##### Start
+
+After a clean installation, it is absolutely necessary to compile the project.
 
 ```sh
 npm run build
 ```
 
-Next, you can start both client and server in two ways
+Next, you can start both client and server in two ways.
 
-1) The first way is to run it with ``` npm run ```
+1) The first way is to run it with ``` npm run ```.
 
 | Command | Functionality |
 | ------ | ------------- |
 | ``` npm run client ``` | Startup Client |
 | ``` npm run server ``` | Startup Server |
 
-2) The second method involves the use of a process manager ``` pm2 ```
+2) The second method involves the use of a process manager ``` pm2 ```.
 
-| Script | Functionality |
+| Command | Functionality |
 | ------ | ------------- |
-| Scripts/StartClient.ps1 | Startup Client with pm2 |
-| Scripts/StartServer.ps1 | Startup Server with pm2 |
+| ``` npm run client_pm2 ``` | Startup Client with pm2 |
+| ``` npm run server_pm2 ``` | Startup Server with pm2 |
 
+##### Auto startup
 
+Automatic boot after system boot in easy accessibility thanks to process manager (pm2).
+
+Process manager is automatically installed when you run the script ``` InstallProject.ps1 ```.
+
+To make it work you need to install the global package without which most likely auto startup will not work.
+
+```sh
+npm install pm2-windows-startup -g
+pm2-startup install
+```
+
+PM2 will now automatically revive the saved processes on startup. To save the current list of processes execute:
+
+```sh
+pm2 save
+```
+
+##### Logs (In development)
