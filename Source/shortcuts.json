@@ -1,22 +1,26 @@
 {
 	"Shortcuts": {
 		"NUMPAD 0": "ALL",
-		"NUMPAD 1": ["1HOTEL"],
+
+		"NUMPAD 1":   ["1HOTEL"],
+		"NUMPAD DOT": ["3HOTEL"],
+
 		"NUMPAD 2": ["ABK2"],
 		"NUMPAD 3": ["ABK3"],
 		"NUMPAD 4": ["ABK4"],
 		"NUMPAD 5": ["ABK5"],
-		"NUMPAD 6": ["1MODUL"],
-		"NUMPAD 7": ["3MODUL"],
-		"NUMPAD 8": ["4MODUL"],
-		"NUMPAD 9": ["5MODUL"],
-		"NUMPAD DIVIDE": ["7MODUL"],
-		"NUMPAD MULTIPLY": ["1MODUL", "2MODUL", "3MODUL", "4MODUL", "5MODUL", "6MODUL", "7MODUL"],
-		"NUMPAD MINUS": ["1HOTEL", "3HOTEL", "ABK2", "ABK3", "ABK4", "ABK5"],
-		"NUMPAD EQUALS": [""],
-		"NUMPAD PLUS": ["6MODUL"],
+
+		"NUMPAD 6":  ["1MODUL"],
 		"BACKSPACE": ["2MODUL"],
-		"NUMPAD RETURN": [""],
-		"NUMPAD DOT": ["3HOTEL"]
+		"NUMPAD 7":  ["3MODUL"],
+		"NUMPAD 8":  ["4MODUL"],
+		"NUMPAD 9":  ["5MODUL"],
+		"NUMPAD PLUS":   ["6MODUL"],
+		"NUMPAD DIVIDE": ["7MODUL"],
+
+		"NUMPAD MULTIPLY": ["1MODUL", "2MODUL", "3MODUL", "4MODUL", "5MODUL", "6MODUL", "7MODUL"],
+		"NUMPAD MINUS":    ["1HOTEL", "3HOTEL", "ABK2", "ABK3", "ABK4", "ABK5"],
+		
+		"NUMPAD RETURN": [""]
 	}
 }

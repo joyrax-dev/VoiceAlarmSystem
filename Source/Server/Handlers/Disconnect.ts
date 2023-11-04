@@ -1,33 +1,34 @@
 import { IHandler } from "../../Shared/IHandler"
 import { Handler as Deauth } from "./Deauth"
-import { Socket } from 'socket.io'
+import { Socket, Server } from 'socket.io'
+import { Logger } from "../../Shared/Logger"
 
 export const Handler: IHandler<string, void> = {
-    Handler: function(socket: Socket) {
+    Handler: function(socket: Socket, server: Server) {
         return function disconnect(reason: string) {
-            console.log(`Disconnected [id=${socket.id}]`)
+            Logger.warn(`Disconnected [id=${socket?.id}]`)
 
             if (reason === 'transport close') { // Был подключен
-                console.log(`Соединение потеряно`)
+                Logger.error(`Соединение потеряно`)
             }
             else if (reason === 'transport error') { // Не удалось подключиться
-                console.log(`При соединении произошла ошибка`)
+                Logger.error(`При соединении произошла ошибка`)
                 return
             }
             else if (reason === 'client namespace disconnect') { // Был подключен
-                console.log(`Клиент сам отключился`)
+                Logger.error(`Клиент сам отключился`)
             }
             else if (reason === 'server namespace disconnect') { // Был подключен
-                console.log(`Клиент принудительно отключен`)
+                Logger.error(`Клиент принудительно отключен`)
             }
             else if (reason === 'ping timeout') { // Был подключен
-                console.log(`Превышено время ожидания ответа`)
+                Logger.error(`Превышено время ожидания ответа`)
             }
             else if (reason === 'parse error' || reason === 'forced close') {
-                console.log(`Соединение потеряно из-за поврежденого пакета`)
+                Logger.error(`Соединение потеряно из-за поврежденого пакета`)
             }
             else if (reason === 'forced server close') {
-                console.log(`Превышено время ожидания ответа и был принудительно отключен`)
+                Logger.error(`Превышено время ожидания ответа и был принудительно отключен`)
                 return
             }
 

@@ -1,18 +1,29 @@
 import { Socket } from 'socket.io-client'
-import { Handler as Disconnect } from './Disconnect'
-import { Handler as Connect } from './Connect'
-import { Handler as ConnectError } from './ConnectError'
-import { Handler as Error } from './Error'
-import { Handler as PlayAudio } from './PlayAudio'
-import { Handler as Pong } from './Pong'
-import { Handler as GetLatency } from './GetLatency'
+import { readdirSync, statSync, Stats } from 'fs'
+import { ExtractFunctionName } from '../../Shared/ExtractFunctionName'
+import { join } from 'path'
+
 
 export function StartHandlers(socket: Socket) {
-    socket.on('disconnect', Disconnect.Handler(socket))
-    socket.on('connect', Connect.Handler(socket))
-    socket.on('connect_error', ConnectError.Handler(socket))
-    socket.on('error', Error.Handler(socket))
-    socket.on('play_audio', PlayAudio.Handler(socket))
-    socket.on('pong', Pong.Handler(socket))
-    socket.on('get_latency', GetLatency.Handler(socket))
+    ImportHandlers(__dirname, socket)
+}
+
+function ImportHandlers(folderPath: string, socket: Socket) {
+    const files: string[] = readdirSync(folderPath)
+
+    files.forEach((file: string) => {
+        const filePath: string = join(folderPath, file)
+        const stats: Stats = statSync(filePath)
+
+        if (stats.isFile() && file.endsWith('.ts')) {
+            const module = require(filePath)
+            
+            const callback = module.Handler.Handler(socket)
+            const callback_name = ExtractFunctionName(callback)
+
+            socket.on(callback_name, callback)
+        } else if (stats.isDirectory()) {
+            ImportHandlers(filePath, socket)
+        }
+    })
 }

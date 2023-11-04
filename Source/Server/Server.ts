@@ -1,6 +1,7 @@
 import { createServer, Server as HttpServer } from 'http'
 import { Server, Socket } from 'socket.io'
 import { StartHandlers } from './Handlers'
+import { Logger } from '../Shared/Logger'
 import * as Config from '../server.json'
 
 export default function Start() {
@@ -12,10 +13,10 @@ export default function Start() {
     SocketServer.on('connection', (socket: Socket) => {
         StartHandlers(socket, SocketServer)
 
-        console.log(`Client connected [id=${socket.id}]`)
+        Logger.info(`Client connected [id=${socket.id}]`)
     })
 
     Http.listen(Config.Port, Config.Host, () => {
-        console.log('Server startup')
+        Logger.info(`Server listening [on=http://${Config.Host}:${Config.Port}]`)
 })
 }

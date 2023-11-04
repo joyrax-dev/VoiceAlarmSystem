@@ -1,5 +1,5 @@
 {
-	"Host": "192.168.91.148",
+	"Host": "localhost",
 	"Port": 9909,
 	"Client": {
         "Location": "RESEPTION",

@@ -8,12 +8,13 @@ import { Shortcuts } from '../shortcuts.json'
 import { StartHandlers } from './Handlers'
 import { IGlobalKeyDownMap, IGlobalKeyEvent, Keyboard } from './Keyboard'
 import { Recorder } from './Recorder'
+import { Logger } from '../Shared/Logger'
 
 let Recipient: string | string[] = ''
 let ReadyStart: ReadyStatus = ReadyStatus.Yes
 
 export default function Start() {
-    console.log(`Startup client [type=${Client.Type}] [location=${Client.Location}]`)
+    Logger.info(`Startup client [type=${Client?.Type}] [location=${Client?.Location}]`)
     
     const socket: Socket = SocketConnect(`http://${Host}:${Port}`, {
         autoConnect: false,
@@ -24,7 +25,7 @@ export default function Start() {
     
     process.on('exit', (code: number) => {
         socket.disconnect()
-        console.log(`Client exited with code: ${code}`)
+        Logger.warn(`Client exited with code: ${code}`)
     })
 
     StartHandlers(socket)
@@ -37,7 +38,7 @@ export default function Start() {
             Locations: Recipient,
             Sender: Client as IClientInfo
         })
-        console.log('send chunk: to: ' + Recipient)
+        // console.log('send chunk: to: ' + Recipient)
     })
 
     if (Client.Type == 'OPERATOR') {
@@ -54,12 +55,11 @@ function InitializationKeyboard(): void {
                 player.play({
                     path: join(__dirname, '../SFX/start_record.wav')
                 })
+                
                 setTimeout(() => {
                     Recipient = recip
                     Recorder._stream.resume()
                 }, 100)
-                
-                
             }
         })
 
