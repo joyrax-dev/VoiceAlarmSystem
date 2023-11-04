@@ -7,7 +7,7 @@ Download releases/latest scripts.
 > It is mandatory to run all scripts with administrator rights.
 > And also note that the default installation location of the scripts: ``` C:/Users/admin/Desktop ```.
 
-##### Setting up windows
+#### Setting up windows
 - AccessPowerShell.bat
 - WindowsSetup.ps1
 
@@ -16,7 +16,7 @@ Download releases/latest scripts.
 | AccessPowerShell.bat | Permission to execute scripts in windows |
 | WindowsSetup.ps1     | Setting up windows auto user login |
 
-##### Project installation
+#### Project installation
 - InstallSoft.ps1
 - InstallProject.ps1
 - UpdateProject.ps1
@@ -30,7 +30,7 @@ Download releases/latest scripts.
 
 ## Project launch
 
-##### Configuration
+#### Configuration
 
 Also before starting the project you need to make the initial configuration of the client, or the server, depending on what you need.
 
@@ -82,7 +82,7 @@ Also before starting the project you need to make the initial configuration of t
 }
 ```
 
-##### Start
+#### Start
 
 After a clean installation, it is absolutely necessary to compile the project.
 
@@ -106,7 +106,7 @@ Next, you can start both client and server in two ways.
 | ``` npm run client_pm2 ``` | Startup Client with pm2 |
 | ``` npm run server_pm2 ``` | Startup Server with pm2 |
 
-##### Auto startup
+#### Auto startup
 
 Automatic boot after system boot in easy accessibility thanks to process manager (pm2).
 
@@ -125,4 +125,4 @@ PM2 will now automatically revive the saved processes on startup. To save the cu
 pm2 save
 ```
 
-##### Logs (In development)
+#### Logs (In development)
