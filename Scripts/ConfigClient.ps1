@@ -1,4 +1,4 @@
-cd "C:/Users/admin/Desktop/VoiceAlarmSystem/Source"
+cd "$env:USERPROFILE/Desktop/VoiceAlarmSystem/Source"
 
 # Записываем ввод пользователя
 $HostName = Read-Host "Host"

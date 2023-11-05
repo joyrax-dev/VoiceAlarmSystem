@@ -1,4 +1,4 @@
-cd "C:/Users/admin/Desktop"
+cd "$env:USERPROFILE/Desktop"
 
 # Установка URL софта
 $nodeUrl    = "https://nodejs.org/dist/v20.0.0/node-v20.0.0-x64.msi"

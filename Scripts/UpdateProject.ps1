@@ -1,5 +1,5 @@
 # заходим в папку скомпилированого проекта
-cd "C:/Users/admin/Desktop/VoiceAlarmSystem/Build"
+cd "$env:USERPROFILE/Desktop/VoiceAlarmSystem/Build"
 
 # копируем конфиги в память
 $clientConfig = Get-Content -Raw -Path "client.json" | ConvertFrom-Json

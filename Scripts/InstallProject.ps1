@@ -1,4 +1,4 @@
-cd "C:/Users/admin/Desktop"
+cd "$env:USERPROFILE/Desktop"
 
 # Установка TS и pm2 глобально
 npm install -g typescript pm2 uuid@7
