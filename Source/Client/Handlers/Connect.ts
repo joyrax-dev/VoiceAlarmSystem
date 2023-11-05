@@ -8,6 +8,7 @@ export const Handler: IHandler<void, void> = {
     Handler: function(socket: Socket) {
         return function connect() {
             Logger.info(`Connected [to=http://${Host}:${Port}]`)
+            socket.sendBuffer = []
             
             setTimeout(() => {
                 socket.emit('auth', Client as IClientInfo)
