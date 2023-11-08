@@ -35,8 +35,7 @@ export default function Start() {
     Recorder._stream.on('data', (audio: any) => {
         socket.emit('send_audio', {
             Audio: audio,
-            Locations: Recipient,
-            Sender: Client as IClientInfo
+            Locations: Recipient
         })
         // console.log('send chunk: to: ' + Recipient)
     })
@@ -51,6 +50,7 @@ function InitializationKeyboard(): void {
         Keyboard.addListener((event: IGlobalKeyEvent, isDown: IGlobalKeyDownMap) => {
             if (event.state == 'DOWN' && event.name == key && ReadyStart == ReadyStatus.Yes) {
                 ReadyStart = ReadyStatus.No
+                console.log('start record')
 
                 player.play({
                     path: join(__dirname, '../SFX/start_record.wav')
@@ -66,6 +66,7 @@ function InitializationKeyboard(): void {
         Keyboard.addListener((event: IGlobalKeyEvent, isDown: IGlobalKeyDownMap) => {
             if (event.state == 'UP' && event.name == key && ReadyStart == ReadyStatus.No) {
                 ReadyStart = ReadyStatus.Maybe
+                console.log('pre-stop record')
                 
                 setTimeout(() => {
                     Recorder._stream.pause()
@@ -77,6 +78,7 @@ function InitializationKeyboard(): void {
                 
                 setTimeout(() => {
                     ReadyStart = ReadyStatus.Yes
+                    console.log('stop record')
                 }, 1000)
             }
         })
