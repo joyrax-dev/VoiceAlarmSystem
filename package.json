@@ -7,13 +7,25 @@
     "build": "tsc -build && xcopy /E /I \"./Source/SFX\" \"./Build/SFX\"",
     "server": "node \"./Build/App.js\" --which server",
     "client": "node \"./Build/App.js\" --which client",
+    "monitor": "node \"./Build/App.js\" --which monitor",
     "server_pm2": "pm2 start ecosystem.config.js --only server",
     "client_pm2": "pm2 start ecosystem.config.js --only client"
   },
-  "keywords": ["socket", "socket.io", "recorder", "speaker", "server", "client", "voice", "notification", "voice-notification"],
+  "keywords": [
+    "socket",
+    "socket.io",
+    "recorder",
+    "speaker",
+    "server",
+    "client",
+    "voice",
+    "notification",
+    "voice-notification"
+  ],
   "author": "joyrax, JumpManiack88",
   "license": "BSD-2-Clause",
   "dependencies": {
+    "blessed": "^0.1.81",
     "commander": "^11.1.0",
     "data-store": "^3.1.0",
     "log4js": "^6.9.1",

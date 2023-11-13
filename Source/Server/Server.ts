@@ -18,5 +18,5 @@ export default function Start() {
 
     Http.listen(Config.Port, Config.Host, () => {
         Logger.info(`Server listening [on=http://${Config.Host}:${Config.Port}]`)
-})
+    })
 }
