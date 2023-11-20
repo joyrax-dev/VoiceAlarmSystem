@@ -1,7 +1,5 @@
 import player from 'node-wav-player'
-import { join } from 'path'
 import { Socket, connect as SocketConnect } from 'socket.io-client'
-import { IClientInfo } from '../Shared/IClientInfo'
 import { ReadyStatus } from '../Shared/ReadyStatus'
 import { Client, Host, Port } from '../client.json'
 import { Shortcuts } from '../shortcuts.json'
@@ -20,7 +18,8 @@ export default function Start() {
         autoConnect: false,
         reconnection: true,
         reconnectionAttempts: Infinity,
-        reconnectionDelay: 5000
+        reconnectionDelay: 5000,
+        transports: ["websocket"]
     })
     
     process.on('exit', (code: number) => {
@@ -37,25 +36,59 @@ export default function Start() {
             Audio: audio,
             Locations: Recipient
         })
+
+        // recordBuffer += audio
     })
 
     if (Client.Type == 'OPERATOR') {
-        InitializationKeyboard()
+        InitializationKeyboard(socket)
     }
 }
 
-function InitializationKeyboard(): void {
+// let intervalRecord = null
+// let recordBuffer = ''
+
+// function startRecord(socket) {
+//     // Очищаем буфер и запускаем стрим
+//     recordBuffer = ''
+//     Recorder._stream.resume()
+
+//     // интервал каждые 300 милисекунд
+//     intervalRecord = setInterval(() => {
+//         if (recordBuffer.length > 0) {
+//             // Тоесть каждые 300 милисекунд мы отправляем буфер и чистим его
+//             socket.emit('send_audio', {
+//                 Audio: recordBuffer,
+//                 Locations: Recipient
+//             })
+//             recordBuffer = ''
+//         }
+//     }, 300)
+// }
+
+// function stopRecord() {
+//     setTimeout(() => {
+//         if (intervalRecord != null) {
+//             // Удаляем интервал что бы он не выполнялся больше и останавливаем стрим
+//             clearInterval(intervalRecord)
+//             Recorder._stream.pause()
+
+//             // Подчистим память
+//             intervalRecord = null
+//             recordBuffer = ''
+//         }
+//     }, 300) // 300 милисекунд нужны при остановке для того что бы не пропдали последние слова
+// }
+
+function InitializationKeyboard(socket): void {
     function Shortcut(key: string, recip: string | string[]) {
         Keyboard.addListener((event: IGlobalKeyEvent, isDown: IGlobalKeyDownMap) => {
             if (event.state == 'DOWN' && event.name == key && ReadyStart == ReadyStatus.Yes) {
                 ReadyStart = ReadyStatus.No
 
-                player.play({
-                    path: join(__dirname, '../SFX/start_record.wav')
-                })
-                
                 setTimeout(() => {
                     Recipient = recip
+                    // startRecord(socket)
                     Recorder._stream.resume()
                 }, 100)
             }
@@ -67,15 +100,13 @@ function InitializationKeyboard(): void {
                 
                 setTimeout(() => {
                     Recorder._stream.pause()
+                    // stopRecord()
                 }, 200)
                 
-                player.play({
-                    path: join(__dirname, '../SFX/end_record.wav')
-                })
                 
                 setTimeout(() => {
                     ReadyStart = ReadyStatus.Yes
-                }, 1000)
+                }, 700)
             }
         })
     }

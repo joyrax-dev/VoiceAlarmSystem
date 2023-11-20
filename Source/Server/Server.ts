@@ -8,7 +8,9 @@ export default function Start() {
     console.log(`Startup server [host=${Config.Host}] [port=${Config.Port}]`)
     
     const Http: HttpServer = createServer()
-    const SocketServer: Server = new Server(Http)
+    const SocketServer: Server = new Server(Http, {
+        transports: ["websocket"]
+    })
 
     SocketServer.on('connection', (socket: Socket) => {
         StartHandlers(socket, SocketServer)
