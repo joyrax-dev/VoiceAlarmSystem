@@ -31,8 +31,6 @@
     "log4js": "^6.9.1",
     "node-global-key-listener": "^0.1.1",
     "node-record-lpcm16": "^1.0.1",
-    "node-wav-player": "^0.2.0",
-    "perf_hooks": "^0.0.1",
     "socket.io": "^4.7.2",
     "socket.io-client": "^4.7.2",
     "speaker": "^0.5.4"
